@@ -11,6 +11,10 @@ import QrActions from "@/components/QrActions";
 import QrViewer from "@/components/QrViewer";
 import ConfirmButton from "@/components/ConfirmButton";
 
+// 실시간 참여자 입장 즉시 반영 — Vercel CDN 캐시 우회
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function RoomDetailPage({ params }: { params: { id: string } }) {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -110,6 +114,7 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
       <RealtimeRefresh
         tables={["participants", "stages", "votes", "matches"]}
         roomId={room.id}
+        debounceMs={150}
       />
       {/* TopAppBar */}
       <header className="fixed top-0 left-0 w-full h-16 flex justify-between items-center px-6 bg-white z-[60] border-b border-rose-100 shadow-sm">
@@ -400,6 +405,11 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
             <div className="flex items-center gap-2 px-6 py-2.5 bg-rose-500 text-white font-bold rounded-lg">
               <span className="material-symbols-outlined text-[18px]">group</span>
               참여자 <span className="opacity-80">{participantCount}</span>
+              <span
+                className="w-2 h-2 rounded-full bg-green-300 animate-pulse"
+                title="실시간 동기화 중"
+                aria-label="실시간 동기화 중"
+              />
             </div>
             <Link
               href={`/parties/${room.id}/reports`}

@@ -5,6 +5,10 @@ import { createClient } from "@/lib/supabase/server";
 import { toggleHeart } from "../actions";
 import RealtimeRefresh from "@/components/RealtimeRefresh";
 
+// 실시간 참여자 입장 즉시 반영 — Vercel CDN 캐시 우회
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const AVATAR_COLORS = [
   "bg-rose-200",
   "bg-blue-200",
@@ -82,7 +86,7 @@ export default async function PeopleListPage({
       <RealtimeRefresh
         tables={["participants", "stages", "votes"]}
         roomId={room.id}
-        debounceMs={500}
+        debounceMs={150}
       />
       {/* TopAppBar */}
       <header className="fixed top-0 left-0 w-full flex items-center justify-between px-4 h-14 z-50 bg-bg border-b border-primary-soft">
