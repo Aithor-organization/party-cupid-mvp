@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/server";
 import { advanceStage, forceCloseRoom, kickParticipant } from "./actions";
 import RealtimeRefresh from "@/components/RealtimeRefresh";
 import QrActions from "@/components/QrActions";
+import QrViewer from "@/components/QrViewer";
 
 export default async function RoomDetailPage({ params }: { params: { id: string } }) {
   const supabase = createClient();
@@ -220,13 +221,7 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
             {/* QR Card */}
             <div className="bg-white p-8 rounded-lg border border-rose-100 shadow-sm flex flex-col items-center">
               <div className="mb-6 p-4 bg-rose-50 rounded-xl">
-                <div className="w-[240px] h-[240px] bg-white rounded-lg flex items-center justify-center border-2 border-rose-100 relative group">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={qrDataUrl} alt={`QR for ${roomUrl}`} className="w-[200px] h-[200px]" />
-                  <div className="absolute inset-0 bg-white/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer">
-                    <span className="material-symbols-outlined text-rose-500 text-4xl">zoom_in</span>
-                  </div>
-                </div>
+                <QrViewer qrDataUrl={qrDataUrl} roomUrl={roomUrl} roomCode={room.code} />
               </div>
               <p className="text-slate-400 text-xs mb-2 font-medium tracking-wider">ROOM URL</p>
               <div className="bg-rose-50 px-4 py-2 rounded-full text-rose-600 font-bold text-lg mb-6 tracking-tight break-all">
