@@ -7,6 +7,7 @@ import QRCode from "qrcode";
 import { createClient } from "@/lib/supabase/server";
 import { advanceStage, forceCloseRoom, kickParticipant } from "./actions";
 import RealtimeRefresh from "@/components/RealtimeRefresh";
+import QrActions from "@/components/QrActions";
 
 export default async function RoomDetailPage({ params }: { params: { id: string } }) {
   const supabase = createClient();
@@ -23,7 +24,8 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
   if (!room) notFound();
   if (room.host_id !== user.id) redirect("/dashboard"); // 방어 (RLS도 차단하지만 명시)
 
-  const [participantsRes, stagesRes, matchesRes] = await Promise.all([
+  const [profileRes, participantsRes, stagesRes, matchesRes, reportsRes] = await Promise.all([
+    supabase.from("profiles").select("display_name").eq("id", user.id).single(),
     supabase
       .from("participants")
       .select("id, nickname, entry_number, status, joined_at")
@@ -38,7 +40,15 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
       .from("matches")
       .select("id", { count: "exact", head: true })
       .eq("room_id", room.id),
+    supabase
+      .from("reports")
+      .select("id", { count: "exact", head: true })
+      .eq("room_id", room.id)
+      .eq("status", "pending"),
   ]);
+  const pendingReports = reportsRes.count ?? 0;
+  const organizerName = profileRes.data?.display_name ?? user.email?.split("@")[0] ?? "Organizer";
+  const organizerInitial = organizerName.slice(0, 1).toUpperCase();
   const participants = participantsRes.data ?? [];
   const stages = stagesRes.data ?? [];
   const matchCount = matchesRes.count ?? 0;
@@ -110,17 +120,13 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
           <span className="text-2xl font-bold text-rose-500 tracking-tight">Party Cupid</span>
         </div>
         <div className="flex items-center gap-4">
-          <button className="p-2 text-slate-400 hover:bg-rose-50 rounded-full transition-colors relative">
-            <span className="material-symbols-outlined">notifications</span>
-            <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border-2 border-white"></span>
-          </button>
-          <div className="flex items-center gap-3 pl-2 cursor-pointer group">
+          <div className="flex items-center gap-3 pl-2">
             <div className="text-right">
-              <p className="text-sm font-bold text-slate-700">Organizer Name</p>
-              <p className="text-[11px] text-slate-400">Master Admin</p>
+              <p className="text-sm font-bold text-slate-700">{organizerName}</p>
+              <p className="text-[11px] text-slate-400">Host</p>
             </div>
-            <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center ring-2 ring-rose-50 group-hover:ring-rose-200 transition-all text-rose-500 font-bold">
-              O
+            <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center ring-2 ring-rose-50 transition-all text-rose-500 font-bold">
+              {organizerInitial}
             </div>
           </div>
         </div>
@@ -142,14 +148,17 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
           </div>
         </div>
         <nav className="flex-1 space-y-1">
-          <a className="flex items-center gap-3 px-4 py-3 bg-white text-rose-600 font-bold border-r-4 border-rose-500 rounded-l-lg shadow-sm" href="#">
+          <div className="flex items-center gap-3 px-4 py-3 bg-white text-rose-600 font-bold border-r-4 border-rose-500 rounded-l-lg shadow-sm">
             <span className="material-symbols-outlined">dashboard_customize</span>
             <span className="text-sm">Live Control</span>
-          </a>
-          <a className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-rose-100/50 hover:translate-x-1 duration-200" href="#">
-            <span className="material-symbols-outlined">group</span>
-            <span className="text-sm">Participants</span>
-          </a>
+          </div>
+          <Link
+            href={`/parties/${room.id}/stages`}
+            className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-rose-100/50 hover:translate-x-1 duration-200"
+          >
+            <span className="material-symbols-outlined">list_alt</span>
+            <span className="text-sm">Stages</span>
+          </Link>
           <Link
             href={`/parties/${room.id}/reports`}
             className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-rose-100/50 hover:translate-x-1 duration-200"
@@ -157,10 +166,6 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
             <span className="material-symbols-outlined">report_problem</span>
             <span className="text-sm">Reports</span>
           </Link>
-          <a className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-rose-100/50 hover:translate-x-1 duration-200" href="#">
-            <span className="material-symbols-outlined">message</span>
-            <span className="text-sm">Requests</span>
-          </a>
           <Link
             href={`/parties/${room.id}/matches`}
             className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-rose-100/50 hover:translate-x-1 duration-200"
@@ -168,12 +173,14 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
             <span className="material-symbols-outlined">favorite</span>
             <span className="text-sm">Match Results</span>
           </Link>
+          <Link
+            href="/dashboard"
+            className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-rose-100/50 hover:translate-x-1 duration-200 mt-6 border-t border-rose-100/60"
+          >
+            <span className="material-symbols-outlined">arrow_back</span>
+            <span className="text-sm">대시보드로</span>
+          </Link>
         </nav>
-        <div className="mt-auto pt-6 px-2">
-          <button className="w-full py-3 bg-danger text-white rounded-lg text-sm font-bold hover:bg-red-600 transition-colors shadow-sm">
-            Force Close Room
-          </button>
-        </div>
       </aside>
 
       {/* Main Content */}
@@ -197,14 +204,13 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
             </p>
           </div>
           <div className="flex gap-2">
-            <button className="px-4 py-2 bg-white border border-rose-100 text-slate-600 rounded-lg text-sm font-semibold hover:bg-rose-50 transition-colors flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px]">share</span>
-              초대 링크
-            </button>
-            <button className="px-4 py-2 bg-rose-500 text-white rounded-lg text-sm font-bold hover:bg-rose-600 transition-colors shadow-sm flex items-center gap-2">
+            <Link
+              href={`/parties/${room.id}/stages`}
+              className="px-4 py-2 bg-rose-500 text-white rounded-lg text-sm font-bold hover:bg-rose-600 transition-colors shadow-sm flex items-center gap-2"
+            >
               <span className="material-symbols-outlined text-[18px]">settings</span>
-              파티 설정
-            </button>
+              단계 편집
+            </Link>
           </div>
         </div>
 
@@ -226,16 +232,7 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
               <div className="bg-rose-50 px-4 py-2 rounded-full text-rose-600 font-bold text-lg mb-6 tracking-tight break-all">
                 {roomUrl.replace(/^https?:\/\//, "")}
               </div>
-              <div className="grid grid-cols-2 gap-3 w-full">
-                <button className="flex items-center justify-center gap-2 py-3 border border-rose-100 text-slate-600 font-bold text-sm rounded-lg hover:bg-rose-50 transition-colors">
-                  <span className="material-symbols-outlined text-[20px]">download</span>
-                  PNG 다운로드
-                </button>
-                <button className="flex items-center justify-center gap-2 py-3 border border-rose-100 text-slate-600 font-bold text-sm rounded-lg hover:bg-rose-50 transition-colors">
-                  <span className="material-symbols-outlined text-[20px]">content_copy</span>
-                  URL 복사
-                </button>
-              </div>
+              <QrActions roomUrl={roomUrl} qrDataUrl={qrDataUrl} roomCode={room.code} />
             </div>
 
             {/* Operational Tools */}
@@ -405,22 +402,29 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
         {/* Bottom Tabs */}
         <div className="mt-8 border-t border-rose-100 pt-8">
           <div className="flex gap-1 p-1 bg-white rounded-xl border border-rose-100 w-max mx-auto shadow-sm">
-            <button className="flex items-center gap-2 px-6 py-2.5 bg-rose-500 text-white font-bold rounded-lg transition-all">
+            <div className="flex items-center gap-2 px-6 py-2.5 bg-rose-500 text-white font-bold rounded-lg">
               <span className="material-symbols-outlined text-[18px]">group</span>
-              참여자 <span className="opacity-80">23</span>
-            </button>
-            <button className="flex items-center gap-2 px-6 py-2.5 text-slate-500 font-bold rounded-lg hover:bg-rose-50 transition-all">
+              참여자 <span className="opacity-80">{participantCount}</span>
+            </div>
+            <Link
+              href={`/parties/${room.id}/reports`}
+              className="flex items-center gap-2 px-6 py-2.5 text-slate-500 font-bold rounded-lg hover:bg-rose-50 transition-all"
+            >
               <span className="material-symbols-outlined text-[18px]">report</span>
-              신고 <span className="px-1.5 py-0.5 bg-danger text-white text-[10px] rounded-full">2</span>
-            </button>
-            <button className="flex items-center gap-2 px-6 py-2.5 text-slate-500 font-bold rounded-lg hover:bg-rose-50 transition-all">
-              <span className="material-symbols-outlined text-[18px]">chat_bubble</span>
-              요청 <span className="opacity-80">5</span>
-            </button>
-            <button className="flex items-center gap-2 px-6 py-2.5 text-slate-500 font-bold rounded-lg hover:bg-rose-50 transition-all">
+              신고
+              {pendingReports > 0 && (
+                <span className="px-1.5 py-0.5 bg-danger text-white text-[10px] rounded-full">
+                  {pendingReports}
+                </span>
+              )}
+            </Link>
+            <Link
+              href={`/parties/${room.id}/matches`}
+              className="flex items-center gap-2 px-6 py-2.5 text-slate-500 font-bold rounded-lg hover:bg-rose-50 transition-all"
+            >
               <span className="material-symbols-outlined text-[18px]">military_tech</span>
-              결과
-            </button>
+              매칭 결과 <span className="opacity-80">{matchCount}</span>
+            </Link>
           </div>
           <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-4">
             {participants.length === 0 ? (

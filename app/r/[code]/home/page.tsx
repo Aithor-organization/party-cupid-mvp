@@ -103,11 +103,12 @@ export default async function ParticipantHome({
       <header className="bg-bg border-b border-primary-soft flex justify-between items-center w-full px-4 h-14 sticky top-0 z-50">
         <div className="flex items-center gap-2">
           <span className="text-primary text-[22px]">💝</span>
-          <h1 className="font-bold text-[22px] tracking-tight text-primary">{roomName}</h1>
+          <h1 className="font-bold text-[22px] tracking-tight text-primary truncate max-w-[240px]">
+            {roomName}
+          </h1>
         </div>
-        <div className="relative active:scale-95 transition-all duration-200 p-2 hover:bg-primary-soft rounded-full cursor-pointer">
-          <span className="material-symbols-outlined text-slate-500">notifications</span>
-          <span className="absolute top-1.5 right-1.5 bg-danger text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-bg">3</span>
+        <div className="text-[11px] text-slate-500 font-medium">
+          #{entryNumber} {nickname}
         </div>
       </header>
 
@@ -117,7 +118,11 @@ export default async function ParticipantHome({
           <div className="absolute -top-4 -right-4 opacity-10 text-[100px] text-accent select-none">💜</div>
           <div className="relative z-10">
             <span className="text-[13px] font-medium text-slate-500">
-              단계 {activeStageIdx >= 0 ? activeStageIdx + 1 : 0}/{stages.length}
+              {activeStageIdx >= 0
+                ? `단계 ${activeStageIdx + 1}/${stages.length}`
+                : room.status === "closed"
+                ? "파티 종료됨"
+                : `${stages.length}단계 예정 — 호스트 시작 대기`}
             </span>
             <h2 className="text-[22px] font-bold text-accent mt-1 mb-4">{currentPhaseName}</h2>
 
