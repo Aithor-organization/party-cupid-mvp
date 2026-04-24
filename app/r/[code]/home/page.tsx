@@ -4,6 +4,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import RealtimeRefresh from "@/components/RealtimeRefresh";
+import StageTimer from "@/components/StageTimer";
+import NotificationToast from "@/components/NotificationToast";
 
 export default async function ParticipantHome({
   params,
@@ -39,14 +41,25 @@ export default async function ParticipantHome({
   const nickname = participant.nickname;
   const entryNumber = participant.entry_number;
 
-  // 단계 실데이터
+  // 단계 실데이터 + 활성 stage_run (타이머용)
   const { data: stagesRaw } = await supabase
     .from("stages")
-    .select('id, "order", name, collect_vote, status')
+    .select('id, "order", name, collect_vote, status, trigger_timer_minutes, current_run_id')
     .eq("room_id", room.id)
     .order("order");
   const stages = stagesRaw ?? [];
   const activeStageIdx = stages.findIndex((s) => s.status === "active");
+  const activeStage = activeStageIdx >= 0 ? stages[activeStageIdx] : null;
+
+  let activeRunOpenedAt: string | null = null;
+  if (activeStage?.current_run_id) {
+    const { data: run } = await supabase
+      .from("stage_runs")
+      .select("opened_at")
+      .eq("id", activeStage.current_run_id)
+      .single();
+    activeRunOpenedAt = run?.opened_at ?? null;
+  }
 
   type PhaseStatus = "done" | "active" | "pending" | "future";
   const phases = stages.map((s, i) => {
@@ -103,6 +116,11 @@ export default async function ParticipantHome({
         roomId={room.id}
         debounceMs={800}
       />
+      <NotificationToast
+        roomId={room.id}
+        participantId={participant.id}
+        roomCode={code}
+      />
       {/* TopAppBar */}
       <header className="bg-bg border-b border-primary-soft flex justify-between items-center w-full px-4 h-14 sticky top-0 z-50">
         <div className="flex items-center gap-2">
@@ -111,9 +129,17 @@ export default async function ParticipantHome({
             {roomName}
           </h1>
         </div>
-        <div className="text-[11px] text-slate-500 font-medium">
-          #{entryNumber} {nickname}
-        </div>
+        <Link
+          href={`/r/${code}/me`}
+          className="flex items-center gap-1.5 px-2 py-1 rounded-full hover:bg-primary-soft transition-colors"
+        >
+          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-rose-200 to-pink-300 flex items-center justify-center text-white text-[11px] font-bold">
+            {nickname.slice(0, 1)}
+          </div>
+          <span className="text-[11px] text-slate-600 font-medium">
+            #{entryNumber} {nickname}
+          </span>
+        </Link>
       </header>
 
       <main className="p-4 space-y-4 max-w-[375px] mx-auto">
@@ -128,7 +154,17 @@ export default async function ParticipantHome({
                 ? "파티 종료됨"
                 : `${stages.length}단계 예정 — 호스트 시작 대기`}
             </span>
-            <h2 className="text-[22px] font-bold text-accent mt-1 mb-4">{currentPhaseName}</h2>
+            <h2 className="text-[22px] font-bold text-accent mt-1 mb-2">{currentPhaseName}</h2>
+
+            {activeRunOpenedAt && activeStage?.trigger_timer_minutes && (
+              <div className="mb-3">
+                <StageTimer
+                  openedAt={activeRunOpenedAt}
+                  timerMinutes={activeStage.trigger_timer_minutes}
+                  label="마감"
+                />
+              </div>
+            )}
 
             <div className="flex gap-2 mb-4">
               <div className="bg-white rounded-lg px-3 py-2 flex-1 shadow-sm">

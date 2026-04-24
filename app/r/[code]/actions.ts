@@ -202,6 +202,72 @@ export async function sendMessage(
 // 신고 — 참여자 또는 메시지 신고
 // =============================================================================
 
+// =============================================================================
+// 본인 닉네임 변경
+// =============================================================================
+
+export type UpdateNicknameResult = { ok: true } | { ok: false; error: string };
+
+export async function updateMyNickname(
+  roomCode: string,
+  newNickname: string,
+): Promise<UpdateNicknameResult> {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { ok: false, error: "로그인이 필요합니다" };
+
+  const trimmed = newNickname.trim();
+  if (!trimmed) return { ok: false, error: "닉네임을 입력해 주세요" };
+  if (trimmed.length > 20) return { ok: false, error: "닉네임은 20자 이내" };
+
+  const { data: room } = await supabase
+    .from("rooms")
+    .select("id")
+    .eq("code", roomCode)
+    .single();
+  if (!room) return { ok: false, error: "방을 찾을 수 없습니다" };
+
+  const { error } = await supabase
+    .from("participants")
+    .update({ nickname: trimmed })
+    .eq("room_id", room.id)
+    .eq("anon_user_id", user.id);
+  if (error) return { ok: false, error: `변경 실패: ${error.message}` };
+
+  revalidatePath(`/r/${roomCode}/home`);
+  revalidatePath(`/r/${roomCode}/me`);
+  return { ok: true };
+}
+
+// =============================================================================
+// 방 나가기 — status=left로 업데이트 (실제 row 삭제 안함)
+// =============================================================================
+
+export type LeaveRoomResult = { ok: true } | { ok: false; error: string };
+
+export async function leaveRoom(roomCode: string): Promise<LeaveRoomResult> {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { ok: false, error: "로그인이 필요합니다" };
+
+  const { data: room } = await supabase
+    .from("rooms")
+    .select("id")
+    .eq("code", roomCode)
+    .single();
+  if (!room) return { ok: false, error: "방을 찾을 수 없습니다" };
+
+  const { error } = await supabase
+    .from("participants")
+    .update({ status: "left" })
+    .eq("room_id", room.id)
+    .eq("anon_user_id", user.id);
+  if (error) return { ok: false, error: `나가기 실패: ${error.message}` };
+
+  revalidatePath(`/r/${roomCode}/home`);
+  return { ok: true };
+}
+
 export type ReportResult = { ok: true } | { ok: false; error: string };
 
 export async function reportTarget(

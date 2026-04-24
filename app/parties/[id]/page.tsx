@@ -9,6 +9,7 @@ import { advanceStage, forceCloseRoom, kickParticipant } from "./actions";
 import RealtimeRefresh from "@/components/RealtimeRefresh";
 import QrActions from "@/components/QrActions";
 import QrViewer from "@/components/QrViewer";
+import ConfirmButton from "@/components/ConfirmButton";
 
 export default async function RoomDetailPage({ params }: { params: { id: string } }) {
   const supabase = createClient();
@@ -380,15 +381,14 @@ export default async function RoomDetailPage({ params }: { params: { id: string 
                     <p className="text-xs text-slate-500">이 작업은 취소할 수 없으며 파티가 즉시 종료됩니다.</p>
                   </div>
                 </div>
-                <form action={closeAction}>
-                  <button
-                    type="submit"
-                    disabled={room.status === "closed"}
-                    className="whitespace-nowrap px-6 py-2.5 bg-danger text-white font-bold text-sm rounded-lg hover:bg-red-700 transition-colors shadow-sm disabled:opacity-50"
-                  >
-                    파티 강제 종료
-                  </button>
-                </form>
+                <ConfirmButton
+                  action={closeAction}
+                  confirmMessage={`정말로 파티를 강제 종료하시겠습니까?\n\n이 작업은 되돌릴 수 없으며, 매칭이 즉시 계산되고 참여자에게 결과가 공개됩니다.`}
+                  label="파티 강제 종료"
+                  pendingLabel="종료 중..."
+                  disabled={room.status === "closed"}
+                  className="whitespace-nowrap px-6 py-2.5 bg-danger text-white font-bold text-sm rounded-lg hover:bg-red-700 transition-colors shadow-sm disabled:opacity-50 flex items-center"
+                />
               </div>
             </div>
           </div>
