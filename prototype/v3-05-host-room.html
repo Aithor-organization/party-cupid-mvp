@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Party Cupid Organizer - Room Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#FF4D6D",
+                        accent: "#7C3AED",
+                        success: "#10B981",
+                        warning: "#F59E0B",
+                        danger: "#EF4444",
+                        background: "#FFF7F8",
+                        surface: "#FFFFFF",
+                        "primary-soft": "#FFE3E8",
+                        "accent-soft": "#EDE4FF",
+                        "success-soft": "#D4F7E8",
+                        "warning-surface": "#FEF3C7"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "12px",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        headline: ["Plus Jakarta Sans", "sans-serif"],
+                        body: ["Plus Jakarta Sans", "sans-serif"],
+                        label: ["Plus Jakarta Sans", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #FFF7F8; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+    </style>
+<style>body,p,span,div,h1,h2,h3,h4,h5,h6,li,td,th,button,label,a{word-break:keep-all;overflow-wrap:break-word;}</style></head>
+<body class="min-h-screen text-slate-900">
+<!-- TopAppBar (Based on Shared Components JSON) -->
+<header class="fixed top-0 left-0 w-full h-16 flex justify-between items-center px-6 bg-white z-[60] border-b border-rose-100 shadow-sm">
+<div class="flex items-center gap-4">
+<a class="flex items-center text-slate-600 hover:text-rose-500 transition-colors gap-1 text-sm font-medium" href="#">
+<span class="material-symbols-outlined">arrow_back</span>
+                대시보드
+            </a>
+<div class="h-4 w-px bg-rose-100 mx-2"></div>
+<span class="text-2xl font-bold text-rose-500 tracking-tight">Party Cupid</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-400 hover:bg-rose-50 rounded-full transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border-2 border-white"></span>
+</button>
+<div class="flex items-center gap-3 pl-2 cursor-pointer group">
+<div class="text-right">
+<p class="text-sm font-bold text-slate-700">Organizer Name</p>
+<p class="text-[11px] text-slate-400">Master Admin</p>
+</div>
+<img alt="Organizer Profile" class="w-10 h-10 rounded-full object-cover ring-2 ring-rose-50 group-hover:ring-rose-200 transition-all" data-alt="Professional portrait of a friendly community organizer in a bright office setting with soft bokeh background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGCYl88i4tmbC9TaOyF72gJfqj6-2A4dm9ndfx_oetYEq2Rqo8g3mZZBUYs9nXTME7fq6d4hG_XlGj0jB1ojgOybKibuNuc25Foyuv75U9bdfeagYC4r5Z6iEApIFteiG9QXiHokTClLuuOtZhJkxIYDDJL_v9a2LxqxilvlUd-uagZb7NGrO2Z4_kcioK2XU0RQrYo7VBJTNnBNUvM069OmIbs0MPgMgnKvEo6hahRCU8du3GtqEhTUFmQTE9yBeS1i0pKBW1bUo"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Based on Shared Components JSON) -->
+<aside class="fixed left-0 top-0 h-full w-64 flex flex-col pt-20 pb-6 px-4 z-50 bg-rose-50 border-r border-rose-100">
+<div class="mb-8 px-2">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-rose-500">qr_code_2</span>
+</div>
+<div>
+<h3 class="text-sm font-bold text-slate-800">Room #1293</h3>
+<p class="text-[11px] text-slate-500">Phase: 1차 선택 진행 중</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-white text-rose-600 font-bold border-r-4 border-rose-500 rounded-l-lg shadow-sm" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard_customize">dashboard_customize</span>
+<span class="text-sm">Live Control</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-rose-100/50 hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="text-sm">Participants</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-rose-100/50 hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="report_problem">report_problem</span>
+<span class="text-sm">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-rose-100/50 hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="message_heart">message</span>
+<span class="text-sm">Requests</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-rose-100/50 hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="text-sm">Match Results</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 px-2">
+<button class="w-full py-3 bg-danger text-white rounded-lg text-sm font-bold hover:bg-red-600 transition-colors shadow-sm">
+                Force Close Room
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 pb-12 px-8 max-w-[1280px]">
+<!-- Sub Header -->
+<div class="flex items-end justify-between mb-8">
+<div>
+<div class="flex items-center gap-3 mb-1">
+<h1 class="text-2xl font-bold text-slate-900">2026 봄 파티</h1>
+<span class="px-2 py-0.5 bg-success-soft text-success text-[11px] font-bold rounded flex items-center gap-1 uppercase">
+<span class="w-1.5 h-1.5 bg-success rounded-full animate-pulse"></span>
+                        LIVE
+                    </span>
+</div>
+<p class="text-slate-500 text-sm">Created at 2026.03.15 · Location: Gangnam</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-white border border-rose-100 text-slate-600 rounded-lg text-sm font-semibold hover:bg-rose-50 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">share</span>
+                    초대 링크
+                </button>
+<button class="px-4 py-2 bg-rose-500 text-white rounded-lg text-sm font-bold hover:bg-rose-600 transition-colors shadow-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+                    파티 설정
+                </button>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-6">
+<!-- Left Column (40%) -->
+<div class="col-span-12 lg:col-span-5 space-y-6">
+<!-- QR Card -->
+<div class="bg-white p-8 rounded-lg border border-rose-100 shadow-sm flex flex-col items-center">
+<div class="mb-6 p-4 bg-rose-50 rounded-xl">
+<div class="w-[240px] h-[240px] bg-white rounded-lg flex items-center justify-center border-2 border-rose-100 border-dashed relative group">
+<img class="w-[200px] h-[200px]" data-alt="High-resolution QR code design with rounded corners and a tiny heart symbol in the center, sleek and professional" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDISgR2Pf4nonib5gVIq4fQ60b4Teu8ZBldEvRwglVIog2_iqfAcbUaxP3Uqhvkw7p7cM8rPr0Nuq6VrHh5sbb-XQ3AOF7CPatDPCeIo2HFnIWsvfBCLD3PRlWZ64NkulQ3XbjNOjXNr7WnCIl-FNpBfRIxgnYerbPTOh3B4gBzgHqkOYrjx2lqnelc39boKtVFYy-t9jA0w-ncxM6l0K401g4uoNz6REaElJJxJJjWjKQTIfodBuUlf5tobw4VuXMUNow861UUndw"/>
+<div class="absolute inset-0 bg-white/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer">
+<span class="material-symbols-outlined text-rose-500 text-4xl">zoom_in</span>
+</div>
+</div>
+</div>
+<p class="text-slate-400 text-xs mb-2 font-medium tracking-wider">ROOM URL</p>
+<div class="bg-rose-50 px-4 py-2 rounded-full text-rose-600 font-bold text-lg mb-6 tracking-tight">
+                        party.app/r/ABC123
+                    </div>
+<div class="grid grid-cols-2 gap-3 w-full">
+<button class="flex items-center justify-center gap-2 py-3 border border-rose-100 text-slate-600 font-bold text-sm rounded-lg hover:bg-rose-50 transition-colors">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                            PNG 다운로드
+                        </button>
+<button class="flex items-center justify-center gap-2 py-3 border border-rose-100 text-slate-600 font-bold text-sm rounded-lg hover:bg-rose-50 transition-colors">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+                            URL 복사
+                        </button>
+</div>
+</div>
+<!-- Operational Tools -->
+<div class="bg-warning-surface p-6 rounded-lg border border-warning/20">
+<div class="flex items-center justify-between">
+<div>
+<h4 class="font-bold text-slate-800 text-sm mb-1">진행 단계 커스텀</h4>
+<p class="text-xs text-slate-600 leading-relaxed">진행 중인 파티의 다음 단계를 미리 수정하거나 건너뛸 수 있습니다.</p>
+</div>
+<button class="whitespace-nowrap px-4 py-2 bg-white text-warning font-bold text-sm rounded-lg border border-warning/30 hover:bg-orange-50 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">settings_suggest</span>
+                            단계 구성 편집
+                        </button>
+</div>
+</div>
+</div>
+<!-- Right Column (60%) -->
+<div class="col-span-12 lg:col-span-7 space-y-6">
+<!-- Live Status Card -->
+<div class="bg-white p-6 rounded-lg border border-rose-100 shadow-sm">
+<div class="grid grid-cols-2 gap-6 mb-8">
+<div class="space-y-4">
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="text-xs font-bold text-slate-400">PARTICIPANTS</span>
+<span class="text-sm font-bold text-rose-500">23 / 50</span>
+</div>
+<div class="w-full h-2 bg-rose-50 rounded-full overflow-hidden">
+<div class="h-full bg-rose-500 rounded-full" style="width: 46%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="text-xs font-bold text-slate-400">PHASE PROGRESS</span>
+<span class="text-sm font-bold text-accent">단계 5 / 7</span>
+</div>
+<div class="flex gap-1.5">
+<div class="h-1.5 flex-1 bg-accent rounded-full"></div>
+<div class="h-1.5 flex-1 bg-accent rounded-full"></div>
+<div class="h-1.5 flex-1 bg-accent rounded-full"></div>
+<div class="h-1.5 flex-1 bg-accent rounded-full"></div>
+<div class="h-1.5 flex-1 bg-accent rounded-full shadow-[0_0_8px_rgba(124,58,237,0.4)]"></div>
+<div class="h-1.5 flex-1 bg-slate-100 rounded-full"></div>
+<div class="h-1.5 flex-1 bg-slate-100 rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="bg-accent-soft p-4 rounded-xl flex flex-col justify-center border border-accent/10">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-accent" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="text-accent font-extrabold text-lg">두번째 투표</span>
+</div>
+<p class="text-accent/70 text-xs font-medium">실시간 호감도 셔플 중</p>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-4">
+<div class="bg-slate-50 p-4 rounded-lg flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-rose-500 mb-1" style="font-variation-settings: 'FILL' 1;">timer</span>
+<p class="text-xl font-black text-slate-800">03:45</p>
+<p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Remaining</p>
+</div>
+<div class="bg-slate-50 p-4 rounded-lg flex flex-col items-center text-center relative overflow-hidden">
+<span class="material-symbols-outlined text-success mb-1">fact_check</span>
+<p class="text-xl font-black text-slate-800">18 / 23</p>
+<p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Completed</p>
+<div class="absolute bottom-0 left-0 h-1 bg-success w-[78%]"></div>
+</div>
+<div class="bg-slate-50 p-4 rounded-lg flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-rose-500 mb-1" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+<div class="flex items-baseline gap-1">
+<p class="text-xl font-black text-slate-800">89</p>
+<p class="text-[10px] text-success font-bold">~7 Matches</p>
+</div>
+<p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Total Hearts</p>
+</div>
+</div>
+</div>
+<!-- Phase Control Card -->
+<div class="bg-white p-8 rounded-lg border-2 border-rose-200 shadow-lg relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4">
+<div class="flex items-center gap-1 bg-rose-50 px-2 py-1 rounded text-[10px] font-bold text-rose-500">
+<span class="material-symbols-outlined text-[12px]">info</span>
+                            AUTO-TRANSITION OFF
+                        </div>
+</div>
+<div class="mb-6">
+<div class="flex items-center gap-2 text-slate-400 text-sm font-medium mb-1">
+<span class="material-symbols-outlined text-[18px]">fast_forward</span>
+                            다음 단계: 단계 6 마지막 투표
+                        </div>
+<p class="text-xs text-slate-400">(호감도 ❤ 5분 + 전원완료 시 활성화 가능)</p>
+</div>
+<div class="flex gap-4">
+<button class="flex-[1] py-4 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-all flex items-center justify-center gap-2 active:scale-[0.98]">
+<span class="material-symbols-outlined">arrow_back</span>
+                            이전
+                        </button>
+<button class="flex-[3] py-4 bg-primary text-white font-extrabold text-lg rounded-xl shadow-md shadow-rose-200 hover:bg-rose-600 transition-all flex items-center justify-center gap-3 active:scale-[0.98]">
+                            다음 단계로 (수동)
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Risk Action Section -->
+<div class="bg-slate-100 p-6 rounded-lg border border-slate-200">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-danger text-2xl">warning</span>
+<div>
+<h4 class="font-bold text-slate-800 text-sm">위험 액션 (2단계 확인)</h4>
+<p class="text-xs text-slate-500">이 작업은 취소할 수 없으며 파티가 즉시 종료됩니다.</p>
+</div>
+</div>
+<button class="px-6 py-2.5 bg-danger text-white font-bold text-sm rounded-lg hover:bg-red-700 transition-colors shadow-sm">
+                            파티 강제 종료
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Tabs -->
+<div class="mt-8 border-t border-rose-100 pt-8">
+<div class="flex gap-1 p-1 bg-white rounded-xl border border-rose-100 w-max mx-auto shadow-sm">
+<button class="flex items-center gap-2 px-6 py-2.5 bg-rose-500 text-white font-bold rounded-lg transition-all">
+<span class="material-symbols-outlined text-[18px]">group</span>
+                    참여자 <span class="opacity-80">23</span>
+</button>
+<button class="flex items-center gap-2 px-6 py-2.5 text-slate-500 font-bold rounded-lg hover:bg-rose-50 transition-all">
+<span class="material-symbols-outlined text-[18px]">report</span>
+                    신고 <span class="px-1.5 py-0.5 bg-danger text-white text-[10px] rounded-full">2</span>
+</button>
+<button class="flex items-center gap-2 px-6 py-2.5 text-slate-500 font-bold rounded-lg hover:bg-rose-50 transition-all">
+<span class="material-symbols-outlined text-[18px]">chat_bubble</span>
+                    요청 <span class="opacity-80">5</span>
+</button>
+<button class="flex items-center gap-2 px-6 py-2.5 text-slate-500 font-bold rounded-lg hover:bg-rose-50 transition-all">
+<span class="material-symbols-outlined text-[18px]">military_tech</span>
+                    결과
+                </button>
+</div>
+<!-- Tab Content (Preview) -->
+<div class="mt-8 grid grid-cols-4 gap-4">
+<!-- Simple Skeleton Cards for Participants -->
+<div class="bg-white p-4 rounded-lg border border-rose-50 flex items-center gap-3">
+<div class="w-10 h-10 bg-slate-100 rounded-full"></div>
+<div>
+<div class="w-16 h-3 bg-slate-100 rounded mb-1"></div>
+<div class="w-10 h-2 bg-slate-50 rounded"></div>
+</div>
+</div>
+<div class="bg-white p-4 rounded-lg border border-rose-50 flex items-center gap-3">
+<div class="w-10 h-10 bg-slate-100 rounded-full"></div>
+<div>
+<div class="w-16 h-3 bg-slate-100 rounded mb-1"></div>
+<div class="w-10 h-2 bg-slate-50 rounded"></div>
+</div>
+</div>
+<div class="bg-white p-4 rounded-lg border border-rose-50 flex items-center gap-3">
+<div class="w-10 h-10 bg-slate-100 rounded-full"></div>
+<div>
+<div class="w-16 h-3 bg-slate-100 rounded mb-1"></div>
+<div class="w-10 h-2 bg-slate-50 rounded"></div>
+</div>
+</div>
+<div class="bg-white p-4 rounded-lg border border-rose-50 flex items-center gap-3">
+<div class="w-10 h-10 bg-slate-100 rounded-full"></div>
+<div>
+<div class="w-16 h-3 bg-slate-100 rounded mb-1"></div>
+<div class="w-10 h-2 bg-slate-50 rounded"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

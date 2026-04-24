@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#FF4D6D",
+                        accent: "#7C3AED",
+                        success: "#10B981",
+                        warning: "#F59E0B",
+                        danger: "#EF4444",
+                        bg: "#FFF7F8",
+                        surface: "#FFFFFF",
+                        "primary-soft": "#FFE3E8",
+                        "accent-soft": "#EDE4FF",
+                        "success-soft": "#D4F7E8",
+                        "warning-surface": "#FEF3C7",
+                        "danger-soft": "#FEE2E2"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "12px",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-bg text-gray-900 min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full flex items-center justify-between px-4 h-14 z-50 bg-[#FFF7F8] dark:bg-gray-950 border-b border-[#FFE3E8] dark:border-gray-800">
+<button class="transition-all duration-200 active:scale-95 text-[#FF4D6D] flex items-center justify-center w-10 h-10">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-bold text-[18px] tracking-tight text-[#FF4D6D]">참여자 (23명)</h1>
+<button class="transition-all duration-200 active:scale-95 text-[#FF4D6D] flex items-center justify-center w-10 h-10">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+</header>
+<!-- Sticky Status Banner -->
+<div class="fixed top-14 left-0 w-full z-40 bg-[#EDE4FF] h-10 flex items-center justify-center">
+<p class="text-[13px] font-bold text-accent tracking-tight">💜 2차 진행 중 · ❤ 1/3</p>
+</div>
+<!-- Main Content Canvas -->
+<main class="pt-28 pb-40 px-4">
+<!-- Search Input -->
+<div class="relative mb-6">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" data-icon="search">search</span>
+<input class="w-full h-12 pl-12 pr-4 bg-white border-none rounded-lg shadow-sm focus:ring-2 focus:ring-primary-soft text-[15px]" placeholder="닉네임 검색..." type="text"/>
+</div>
+<!-- Filter Tabs -->
+<div class="flex gap-2 overflow-x-auto hide-scrollbar mb-6 pb-2">
+<button class="flex-shrink-0 px-5 py-2 bg-primary text-white rounded-full text-[13px] font-bold shadow-md shadow-primary/20">전체</button>
+<button class="flex-shrink-0 px-5 py-2 bg-white text-gray-500 rounded-full text-[13px] font-medium border border-[#FFE3E8]">내 선택 3</button>
+<button class="flex-shrink-0 px-5 py-2 bg-white text-gray-500 rounded-full text-[13px] font-medium border border-[#FFE3E8]">미선택 20</button>
+<button class="flex-shrink-0 px-5 py-2 bg-white text-gray-500 rounded-full text-[13px] font-medium border border-[#FFE3E8]">새로 들어옴 2</button>
+</div>
+<!-- Participant List -->
+<div class="space-y-4">
+<!-- Card #1: Unselected -->
+<div class="flex bg-white rounded-lg overflow-hidden shadow-sm border border-[#FFE3E8]">
+<div class="flex-1 p-4 flex items-center gap-4">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="cute minimalist 3d avatar of a person candy pop pastel background soft lighting friendly expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4-Z2KNvSBtnngpQiFx_n390-FgcQ0iAdjHSZ4SRRP_03GfHS_LW_Nl3m_qNKKzzENjxnLdNLlTTM6CT6rHu1xHPq1p9Hvoa4RkqtnZd7bulbHKrxikma7wJiBrFKhse33BHBMOvmjnvwvb4fXL-hfTfLz_qoebCiQJGS2L-bqM5KPAUqyl9AUTOzvxkvZI-EjBbNrSIpIA6IauCUgKiog9g3n-UlogFukkJ6nyeOMJ5azCArMDOyJf1_e2ZIVg3gQVajhy9iEZjo"/>
+<div class="flex-1">
+<h3 class="font-bold text-[15px] flex items-center gap-1.5">
+                            01 캔디팝
+                        </h3>
+<div class="flex items-center gap-1 text-gray-400 text-[11px] mt-0.5">
+<span>방금 입장</span>
+<span class="text-[8px] text-success">●</span>
+</div>
+</div>
+</div>
+<div class="w-14 border-l border-[#FFE3E8]/50 flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-gray-300 text-2xl" data-icon="favorite">favorite</span>
+</div>
+</div>
+<!-- Card #2: Selected -->
+<div class="flex bg-[#FFE3E8] rounded-lg overflow-hidden shadow-sm border border-primary/10">
+<div class="flex-1 p-4 flex items-center gap-4">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="cool modern 3d avatar character light blue theme sleek design minimalist" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAC4i7n2BuzzbGEy_o1_7aimTowl3bEYvdJpqq-2I3eFTrP3LvJdyOV-ao8oMHyeNeg5eScu4Il0rTD9h0uI1VSLhr5zu2d0iLoJTev_8XNnk888S6vm55M4lRiIXyRCOBlEBabyt70YCN3k37u94PUA2svV9ysSk31hsf-4I4ATYR48AYh5SJ8ZTa0SrWn9qFerE2FVCCHdpfmnAlpHwGgXIwYhKmsMRZAwoxPT3TUKfUbaLB32JaoswEGwWFcAlT-USwsiQkLL7A"/>
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<h3 class="font-bold text-[15px]">02 라이트</h3>
+<span class="px-2 py-0.5 bg-primary text-white text-[10px] rounded-full font-bold">❤ 선택됨</span>
+</div>
+<p class="text-gray-500 text-[11px]">5분 전</p>
+</div>
+</div>
+<div class="w-14 border-l border-primary/20 flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<!-- Card #3: New + Selected -->
+<div class="flex bg-[#D4F7E8] rounded-lg overflow-hidden shadow-sm border border-success/10">
+<div class="flex-1 p-4 flex items-center gap-4">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="vibrant 3d avatar orange color palette happy facial expression digital art style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFXcFJrlIVVCy2VppVDZVR2pH3ReLed_dUqEcyFBo4JZ66u5xkzsTvHhXygofAU_g1e2P8eBoE37NNY4h1zVps-9vvd_dvh-OcFYkxFs7zTYebPVoV22NLsggQUxjv7vhM4yvpHexSq-wCZaelzopLqDFT2FlDS7nH1za6ta9nZOqh1PJYo4IZbAukVXTYdhJrsxXD-OvgxdjYSe-pljZm6b7YEIeA7zS8E_vOLo5R12zzjqBJLstLhhuDiStZh277uv4QGn6YX_M"/>
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<h3 class="font-bold text-[15px]">08 오렌지빛</h3>
+<span class="px-2 py-0.5 bg-primary text-white text-[10px] rounded-full font-bold">❤ 선택됨</span>
+</div>
+<p class="text-success text-[11px] font-bold">🆕 새로 들어옴 (3분 전 입장)</p>
+</div>
+</div>
+<div class="w-14 border-l border-success/20 flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<!-- Card #4: Save Failed -->
+<div class="flex bg-white rounded-lg overflow-hidden shadow-sm border border-danger/20">
+<div class="flex-1 p-4 flex items-center gap-4">
+<img class="w-12 h-12 rounded-full object-cover grayscale opacity-80" data-alt="mysterious 3d avatar night theme moonlight aesthetic soft glow digital art" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV8RXHuEQCZkWEwRoRN7Lw_zyU2GMusXpk0mvIDfb7tEw9_FwGgkIZV8r_LjrMM6vMR88Oqol9oEt2xOSYJxA4Sbx5g0Fm1jWae20A3QAESvKqZlfNuoTckUgWD-aZtKm1i5aYdxSfMJ4Wka5zqrbhu3kKwyLSLWKuT7wPHoranVz_luLQJPQTcYe1ChaZSOrsOFZVi7M8IKKk5tx0vhav3Q0Rue4JF1tbn1uE28FweZRWsFPTtZRu-20djeEU0dBKuuys8usjesg"/>
+<div class="flex-1">
+<h3 class="font-bold text-[15px]">12 달빛</h3>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="text-danger text-[11px] font-bold">🔴 저장 실패</span>
+<button class="text-blue-500 text-[11px] font-bold underline">[다시 시도]</button>
+</div>
+</div>
+</div>
+<div class="w-14 border-l border-[#FFE3E8]/50 flex items-center justify-center relative">
+<span class="material-symbols-outlined text-gray-300 text-2xl" data-icon="favorite">favorite</span>
+<div class="absolute top-4 right-4 w-2.5 h-2.5 bg-danger rounded-full border-2 border-white"></div>
+</div>
+</div>
+<!-- Card #5: Pending/Checking -->
+<div class="flex bg-white rounded-lg overflow-hidden shadow-sm border border-[#FFE3E8]">
+<div class="flex-1 p-4 flex items-center gap-4">
+<img class="w-12 h-12 rounded-full object-cover opacity-60" data-alt="ethereal 3d avatar aurora lights color scheme soft dreamy rendering" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwGjl9TLZdHcZJAnOrF3Khky_iZ08_gn9gMkx6mHG1Oy-AU1U-hDkQFcQkkbCqB5DpSO9b_U5YghR7wmDgjjIJWO6c5J9sNTLOCEHNOfMVbJUvhI8PHUnOJG4V0zZp6Xt1rRfAih-zE8FJiR7YrU3R9eaQ_DnD5tSsM4hsVQ5MJPygjw7AZvvrZkGbw8NzvM4EcK7t10PwYJ2LkYT_60rGwnAL8DhcF0HxIIyIUTbH29yXlcQRybPcBU88QT7Tk5imor-ND-YOwLk"/>
+<div class="flex-1">
+<h3 class="font-bold text-[15px]">15 오로라</h3>
+<p class="text-gray-400 text-[11px] flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-[12px]" data-icon="hourglass_empty">hourglass_empty</span>
+                            확인 중
+                        </p>
+</div>
+</div>
+<div class="w-14 border-l border-[#FFE3E8]/50 flex items-center justify-center">
+<span class="material-symbols-outlined text-gray-300 text-2xl animate-pulse" data-icon="hourglass_top">hourglass_top</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Action Section -->
+<div class="fixed bottom-20 left-0 w-full z-40 px-4">
+<!-- Danger Warning Banner -->
+<div class="bg-danger rounded-full py-3 px-6 flex items-center justify-center shadow-lg shadow-danger/20 mb-2">
+<p class="text-white text-[13px] font-bold">⏰ 2차 마감 1분 전 · 이번이 최종 선택</p>
+</div>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe pt-2 h-20 bg-white dark:bg-gray-900 border-t border-[#FFE3E8] dark:border-gray-800 rounded-t-3xl shadow-[0_-4px_12px_rgba(255,77,109,0.08)]">
+<button class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="text-[11px] font-medium">홈</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-[#FFE3E8] dark:bg-[#FF4D6D]/20 text-[#FF4D6D] rounded-full px-4 py-1.5 active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="group" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="text-[11px] font-medium">참여자</span>
+</button>
+<button class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="text-[11px] font-medium">쪽지</span>
+</button>
+<button class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="text-[11px] font-medium">매칭</span>
+</button>
+<button class="flex flex-col items-center justify-center text-gray-400 dark:text-gray-500 active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[11px] font-medium">내정보</span>
+</button>
+</nav>
+</body></html>

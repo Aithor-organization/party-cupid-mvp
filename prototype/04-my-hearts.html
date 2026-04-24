@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>내 선택 검토 - Party Cupid</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#FF4D6D",
+              accent: "#7C3AED",
+              success: "#10B981",
+              warning: "#F59E0B",
+              danger: "#EF4444",
+              bg: "#FFF7F8",
+              surface: "#FFFFFF",
+              "primary-soft": "#FFE3E8",
+              "accent-soft": "#EDE4FF",
+              "success-soft": "#D4F7E8",
+              "warning-surface": "#FEF3C7",
+            },
+            borderRadius: {
+              "DEFAULT": "0.5rem",
+              "lg": "1rem",
+              "xl": "1.5rem",
+              "full": "9999px"
+            },
+            fontFamily: {
+              headline: ["Plus Jakarta Sans", "Inter", "sans-serif"],
+              body: ["Plus Jakarta Sans", "Inter", "sans-serif"],
+              label: ["Plus Jakarta Sans", "Inter", "sans-serif"],
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  <style>body,p,span,div,h1,h2,h3,h4,h5,h6,li,td,th,button,label,a{word-break:keep-all;overflow-wrap:break-word;}</style></head>
+<body class="bg-[#FFF7F8] font-body text-slate-900 min-h-screen pb-32">
+<!-- TopAppBar Section -->
+<header class="sticky top-0 z-40 bg-[#FFF7F8] dark:bg-slate-900 border-b border-rose-100 dark:border-slate-800 flex items-center w-full px-4 h-20">
+<div class="flex items-center w-full gap-3">
+<button class="p-2 -ml-2 hover:bg-rose-50 dark:hover:bg-slate-800 rounded-full transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-[#FF4D6D]" data-icon="arrow_back">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<h1 class="font-['Inter'] font-bold text-[18px] tracking-tight text-[#FF4D6D]">내 선택 검토</h1>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="text-[#7C3AED] text-[11px] font-bold">💜 2차 투표 · 마감 00:22</span>
+<span class="text-slate-400 text-[11px]">🕐 마지막 저장 22:07:48</span>
+</div>
+</div>
+</div>
+</header>
+<main class="px-4 pt-4 max-w-md mx-auto space-y-6">
+<!-- Warning Card -->
+<div class="bg-[#FEF3C7] rounded-xl p-4 flex items-center justify-between shadow-sm">
+<div class="flex flex-col">
+<span class="text-[#F59E0B] font-bold text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="warning">warning</span>
+                    미완료 2건
+                </span>
+<span class="text-slate-600 text-xs mt-1">저장 실패 1 · 충돌 미해결 1</span>
+</div>
+<button class="text-[#F59E0B] font-bold text-xs bg-white/50 px-3 py-1.5 rounded-full hover:bg-white transition-colors">
+                [미완료 탭으로 →]
+            </button>
+</div>
+<!-- Filter Tier 1 (Radio Group) -->
+<div class="flex gap-2">
+<button class="flex-1 py-3 px-4 bg-[#FF4D6D] text-white rounded-full font-bold text-sm flex items-center justify-center gap-1.5 shadow-md shadow-rose-200">
+<span class="material-symbols-outlined text-[18px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                확정 3
+            </button>
+<button class="flex-1 py-3 px-4 bg-white border border-slate-200 text-slate-500 rounded-full font-bold text-sm flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+                미완료 2
+            </button>
+</div>
+<!-- Filter Tier 2 (Tabs) -->
+<div class="overflow-x-auto scrollbar-hide -mx-4 px-4">
+<div class="flex gap-6 border-b border-rose-100 min-w-max">
+<button class="pb-3 px-1 text-[#FF4D6D] font-bold text-[15px] border-b-2 border-[#FF4D6D]">모두 3</button>
+<button class="pb-3 px-1 text-slate-400 font-medium text-[15px] hover:text-[#FF4D6D] transition-colors">유지 2</button>
+<button class="pb-3 px-1 text-slate-400 font-medium text-[15px] hover:text-[#FF4D6D] transition-colors">신규 1</button>
+<button class="pb-3 px-1 text-slate-400 font-medium text-[15px] hover:text-[#FF4D6D] transition-colors">해제 예정 0</button>
+</div>
+</div>
+<!-- Section: 유지 -->
+<section class="space-y-3">
+<h2 class="font-bold text-lg flex items-center gap-1 text-slate-800">
+<span class="material-symbols-outlined text-rose-400" data-icon="check">check</span>
+                유지 (2)
+            </h2>
+<!-- Card #1 -->
+<div class="bg-[#FFE3E8] rounded-xl p-4 border-l-4 border-[#FF4D6D] flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-sm">
+<img class="w-full h-full object-cover" data-alt="soft warm portrait of a woman with a gentle smile, light aesthetic, minimalist composition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgEWQSG2XExl04QtlJw2FTSWqELqvFftF0W1aUwMgopCOIyOO0-Kuwup9oR7M1oOxKYPSwpqvFnCqJaQ03WCOYqEP3kxHwDLvSZwv66ZkmNMGONVq7b1zIm3fbmE5vfhY2VRFeqpme0XoIMAEWLqWCjhMgO3UJw_VoszTQSUuugOPsP44Z2ppqpdC2DYg2Vk5PiFoEacctl9QG6prVUhvZLJcv_b3Vzn4FKkBHd5p_B5hZGK53mbuiB2lQwHFrqq67qKPMGwBpoPo"/>
+</div>
+<div>
+<div class="flex flex-col gap-1">
+<span class="bg-[#FF4D6D] text-white text-[10px] font-bold px-2 py-0.5 rounded-full w-fit">✓ 1차 → 2차 유지</span>
+<span class="font-bold text-slate-800">02 Light</span>
+</div>
+</div>
+</div>
+<button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-[#FF4D6D] shadow-sm hover:scale-105 active:scale-90 transition-all">
+<span class="material-symbols-outlined text-[28px]" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+<!-- Card #2 -->
+<div class="bg-[#FFE3E8] rounded-xl p-4 border-l-4 border-[#FF4D6D] flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-sm">
+<img class="w-full h-full object-cover" data-alt="man portrait with moody moonlight lighting, calm expression, artistic soft focus photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBc2KOb27GpgYIBpqNqUeYJIGpXnfXDJrR2ImsMCiy15mbiW7P4uhjGFqdyqjaAOtKo9RaBwyqE-Nm7OTZ86sc3Hkw9fcYkyh2Ybmh-saAcb5BC2pDe2JuJZo8zG6q1qo6vUFhw_daRRu1dA-fNOh5mf8arfkkjQSdNFc4lkgFdQvWnWqvRAgraI3_u7yoFTfRA14Fi9kVGdnph5ETtmakV6L1a8ONasu0rJpJxWr3YSRo-U9euX7lZ9SGr9-DKnktP38aIL7Olrs4"/>
+</div>
+<div>
+<div class="flex flex-col gap-1">
+<span class="bg-[#FF4D6D] text-white text-[10px] font-bold px-2 py-0.5 rounded-full w-fit">✓ 유지</span>
+<span class="font-bold text-slate-800">05 Moonlight</span>
+</div>
+</div>
+</div>
+<button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-[#FF4D6D] shadow-sm hover:scale-105 active:scale-90 transition-all">
+<span class="material-symbols-outlined text-[28px]" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+</section>
+<!-- Section: 신규 -->
+<section class="space-y-3">
+<h2 class="font-bold text-lg flex items-center gap-1 text-slate-800">
+<span class="material-symbols-outlined text-emerald-500" data-icon="auto_awesome">auto_awesome</span>
+                신규 (1)
+            </h2>
+<!-- Card #3 -->
+<div class="bg-[#D4F7E8] rounded-xl p-4 border-l-4 border-[#10B981] flex items-center justify-between group">
+<div class="flex items-center gap-3">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-sm">
+<img class="w-full h-full object-cover" data-alt="vibrant energetic portrait of a person in orange sunlight, warm summer mood, candid joyful expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDczDTu7-I5bKAw59MCuwwEyVxJpPCrFxXq87X_3oDEb2hnJpcWSVSZ4z2W32hlpknJiIB1f0W36LHzlobhng4si6ihS6llUL853GKoI50UwOQL06sv3dev1Zp4GiZJS9whJKGPaXuQRUTPlvZjmfW0iEI3himSMh1SI_xUxXfevs-kV-vWL2RNpnFa2V5B2tM-bQeHlVjK0RAaR3UlPZ0kNU0R0HmCicEkGXzrwyWOg0f_ESmO30yQruHHS_hgFprdmSP0JNWom1o"/>
+</div>
+<div>
+<div class="flex flex-col gap-1">
+<span class="bg-[#10B981] text-white text-[10px] font-bold px-2 py-0.5 rounded-full w-fit">✨ 2차 신규</span>
+<span class="font-bold text-slate-800">08 Orange Light</span>
+</div>
+</div>
+</div>
+<button class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-[#FF4D6D] shadow-sm hover:scale-105 active:scale-90 transition-all">
+<span class="material-symbols-outlined text-[28px]" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+</section>
+<!-- Section: 해제 예정 -->
+<section class="space-y-3 pb-4">
+<h2 class="font-bold text-lg flex items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined" data-icon="delete">delete</span>
+                해제 예정 (0)
+            </h2>
+<div class="border-2 border-dashed border-slate-200 rounded-xl py-10 flex items-center justify-center bg-white/50">
+<span class="text-slate-400 font-medium text-sm">아직 해제한 사람 없음</span>
+</div>
+</section>
+<!-- Info Box -->
+<div class="bg-slate-100 rounded-xl p-4 border border-slate-200">
+<p class="text-slate-500 text-[13px] leading-relaxed flex gap-2">
+<span class="material-symbols-outlined text-[18px] shrink-0 mt-0.5" data-icon="info">info</span>
+<span>💡 2차 마감 시점의 선택이 최종 매칭 대상입니다. ⏳ pending 상태는 카운트 미반영</span>
+</p>
+</div>
+<!-- Footer CTA -->
+<button class="w-full py-4 bg-white border-2 border-[#FFE3E8] text-[#FF4D6D] font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-rose-50 transition-colors mb-4 active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+            참여자 더 보기
+        </button>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-20 bg-white dark:bg-slate-950 border-t border-rose-50 dark:border-slate-800 shadow-[0_-4px_12px_rgba(255,77,109,0.08)] rounded-t-[24px]">
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 hover:text-[#FF4D6D] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Inter'] text-[11px] font-medium mt-1">홈</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 hover:text-[#FF4D6D] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-['Inter'] text-[11px] font-medium mt-1">파티</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#FFE3E8] dark:bg-rose-900/30 text-[#FF4D6D] rounded-2xl px-3 py-1.5 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="font-['Inter'] text-[11px] font-medium mt-1 text-[#FF4D6D]">매칭</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-3 py-1.5 hover:text-[#FF4D6D] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Inter'] text-[11px] font-medium mt-1">프로필</span>
+</a>
+</nav>
+</body></html>

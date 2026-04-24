@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#FF4D6D",
+                        accent: "#7C3AED",
+                        success: "#10B981",
+                        warning: "#F59E0B",
+                        danger: "#EF4444",
+                        brandBg: "#FFF7F8",
+                        primarySoft: "#FFE3E8",
+                        accentSoft: "#EDE4FF",
+                        successSoft: "#D4F7E8",
+                        warningSurface: "#FEF3C7",
+                    },
+                    borderRadius: {
+                        'DEFAULT': '0.5rem',
+                        'lg': '12px',
+                        'xl': '1.5rem',
+                        'full': '24px',
+                    },
+                    fontFamily: {
+                        headline: ["Plus Jakarta Sans", "sans-serif"],
+                        body: ["Plus Jakarta Sans", "sans-serif"],
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-brandBg text-slate-800 antialiased min-h-screen flex justify-center">
+<!-- Mobile Canvas (375x812 Emulation for Desktop Viewers) -->
+<div class="relative w-full max-w-[375px] bg-brandBg min-h-screen flex flex-col shadow-2xl overflow-hidden">
+<!-- TopAppBar (From JSON Anchor) -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-3 bg-[#FFF7F8] dark:bg-slate-950 border-b border-rose-100 dark:border-rose-900/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[22px] font-bold text-[#FF4D6D]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<h1 class="font-sans text-[18px] font-semibold tracking-tight text-[#FF4D6D]">2026 봄 파티</h1>
+</div>
+<div class="flex items-center gap-3 relative">
+<button class="relative hover:bg-rose-50 p-2 rounded-full transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-slate-500">notifications</span>
+<span class="absolute top-1 right-1 w-4 h-4 bg-primary text-white text-[10px] font-bold flex items-center justify-center rounded-full border-2 border-[#FFF7F8]">3</span>
+</button>
+</div>
+</header>
+<!-- Content Area -->
+<main class="flex-1 overflow-y-auto pt-16 pb-24 px-4 hide-scrollbar space-y-4">
+<!-- Global Timer -->
+<div class="flex justify-end pt-2">
+<div class="flex items-center gap-1.5 px-3 py-1 bg-white/50 rounded-full border border-rose-100 shadow-sm">
+<span class="material-symbols-outlined text-[16px] text-primary">timer</span>
+<span class="text-xs font-semibold text-primary">남은 시간 01:42:20</span>
+</div>
+</div>
+<!-- 1. Voting Stage Banner (Accent Soft) -->
+<div class="bg-accentSoft rounded-lg p-5 border border-purple-100 shadow-sm relative overflow-hidden">
+<div class="relative z-10">
+<div class="flex items-center gap-1.5 mb-2">
+<span class="text-accent text-sm font-bold">💜 2차 투표 진행 중</span>
+</div>
+<div class="text-3xl font-black text-slate-900 tracking-tight mb-1">
+                        00:22:15
+                    </div>
+<p class="text-[13px] text-accent/80 font-medium">대화 후 변경 가능해요</p>
+</div>
+<!-- Abstract Cupid Shape Decoration -->
+<div class="absolute -right-4 -bottom-4 w-24 h-24 bg-accent/10 rounded-full blur-2xl"></div>
+</div>
+<!-- 2. My Selection Summary (Primary Soft) -->
+<div class="bg-primarySoft rounded-lg p-5 border border-rose-100 shadow-sm">
+<h2 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]">equalizer</span>
+                    내 선택 요약
+                </h2>
+<div class="text-xl font-bold text-primary mb-4">❤ 3명 선택</div>
+<div class="flex gap-2 mb-6 overflow-x-auto hide-scrollbar">
+<span class="whitespace-nowrap px-3 py-1.5 bg-white rounded-full text-[13px] font-semibold text-slate-600 border border-rose-100 shadow-sm">✓ 유지 2</span>
+<span class="whitespace-nowrap px-3 py-1.5 bg-white rounded-full text-[13px] font-semibold text-primary border border-rose-100 shadow-sm">✨ 신규 1</span>
+<span class="whitespace-nowrap px-3 py-1.5 bg-white rounded-full text-[13px] font-semibold text-slate-400 border border-rose-100 shadow-sm">🗑 해제 예정 0</span>
+</div>
+<div class="flex flex-col gap-2">
+<button class="w-full h-12 bg-primary text-white rounded-full font-bold shadow-lg shadow-rose-200 active:scale-[0.98] transition-transform">📋 선택 검토</button>
+<button class="w-full h-12 bg-white text-slate-700 border border-rose-100 rounded-full font-bold active:scale-[0.98] transition-transform">👥 참여자 보기</button>
+</div>
+</div>
+<!-- 4. My Activity Grid -->
+<div class="grid grid-cols-3 gap-3">
+<div class="bg-white rounded-lg p-3 text-center border border-rose-50 shadow-sm flex flex-col items-center justify-center gap-1">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="text-sm font-bold text-slate-800">1/3</span>
+</div>
+<div class="bg-white rounded-lg p-3 text-center border border-rose-50 shadow-sm flex flex-col items-center justify-center gap-1">
+<span class="material-symbols-outlined text-amber-500 text-[20px]">mail</span>
+<span class="text-sm font-bold text-slate-800">2</span>
+</div>
+<div class="bg-white rounded-lg p-3 text-center border border-rose-50 shadow-sm flex flex-col items-center justify-center gap-1">
+<span class="material-symbols-outlined text-blue-500 text-[20px]">notifications</span>
+<span class="text-sm font-bold text-slate-800">3</span>
+</div>
+</div>
+<!-- 3. Party Timeline -->
+<div class="bg-white rounded-lg p-5 border border-rose-50 shadow-sm">
+<h2 class="text-sm font-bold text-slate-800 mb-6 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                    파티 타임라인
+                </h2>
+<div class="space-y-6 relative ml-2">
+<!-- Timeline Line -->
+<div class="absolute left-[11px] top-1 bottom-1 w-0.5 bg-slate-100"></div>
+<!-- Past Steps -->
+<div class="relative flex items-center gap-4">
+<div class="w-6 h-6 rounded-full bg-success flex items-center justify-center z-10 border-4 border-white shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-white font-bold">check</span>
+</div>
+<span class="text-sm text-slate-400">20:00 파티 시작</span>
+</div>
+<div class="relative flex items-center gap-4">
+<div class="w-6 h-6 rounded-full bg-success flex items-center justify-center z-10 border-4 border-white shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-white font-bold">check</span>
+</div>
+<span class="text-sm text-slate-400">20:30 1차 시작</span>
+</div>
+<div class="relative flex items-center gap-4">
+<div class="w-6 h-6 rounded-full bg-success flex items-center justify-center z-10 border-4 border-white shadow-sm">
+<span class="material-symbols-outlined text-[14px] text-white font-bold">check</span>
+</div>
+<span class="text-sm text-slate-400">21:00 1차 마감</span>
+</div>
+<!-- Current Step -->
+<div class="relative flex items-center gap-4">
+<div class="w-6 h-6 rounded-full bg-accent flex items-center justify-center z-10 border-4 border-white shadow-md animate-pulse">
+<span class="material-symbols-outlined text-[14px] text-white font-bold">sync</span>
+</div>
+<span class="text-sm font-extrabold text-accent">22:00 2차 시작</span>
+</div>
+<!-- Future Step -->
+<div class="relative flex items-center gap-4">
+<div class="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center z-10 border-4 border-white">
+<span class="material-symbols-outlined text-[14px] text-slate-300">hourglass_empty</span>
+</div>
+<span class="text-sm text-slate-300">22:30 결과 공개</span>
+</div>
+</div>
+</div>
+<!-- 5. Interests Received (Locked) -->
+<div class="bg-white rounded-lg p-6 border border-rose-50 shadow-sm text-center">
+<div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-rose-50 mb-3">
+<span class="material-symbols-outlined text-primary text-[28px]">lock</span>
+</div>
+<h2 class="text-sm font-bold text-slate-800 mb-2">받은 관심</h2>
+<div class="text-primary font-bold text-lg mb-4">💝 5명이 당신에게 하트를 보냈어요</div>
+<div class="bg-slate-50 rounded-lg p-3 inline-block">
+<p class="text-[11px] font-medium text-slate-500 leading-tight">
+                        🔒 지금은 익명 <br/>
+                        ✓ 2차 마감 후 매칭만 공개
+                    </p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (From JSON Anchor) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe pt-2 h-[64px] bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-t border-rose-100 dark:border-rose-900/20 shadow-[0_-4px_10px_rgba(255,77,109,0.08)] rounded-t-[12px]">
+<!-- 홈 (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#FFE3E8] dark:bg-rose-900/40 text-[#FF4D6D] rounded-[24px] px-4 py-1.5 transition-transform duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[11px] font-medium leading-none mt-0.5">홈</span>
+</a>
+<!-- 참여자 -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-rose-400 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="text-[11px] font-medium leading-none mt-0.5">참여자</span>
+</a>
+<!-- 투표 -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-rose-400 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">how_to_vote</span>
+<span class="text-[11px] font-medium leading-none mt-0.5">투표</span>
+</a>
+<!-- 매칭 -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-rose-400 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+<span class="text-[11px] font-medium leading-none mt-0.5">매칭</span>
+</a>
+<!-- 내정보 -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-rose-400 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">person</span>
+<span class="text-[11px] font-medium leading-none mt-0.5">내정보</span>
+</a>
+</nav>
+</div>
+</body></html>

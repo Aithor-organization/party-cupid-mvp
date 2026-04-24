@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Party Cupid Organizer Room</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#FF4D6D",
+                        accent: "#7C3AED",
+                        success: "#10B981",
+                        warning: "#F59E0B",
+                        danger: "#EF4444",
+                        brandBg: "#FFF7F8",
+                        surface: "#FFFFFF",
+                        primarySoft: "#FFE3E8",
+                        accentSoft: "#EDE4FF",
+                        successSoft: "#D4F7E8",
+                        warningSurface: "#FEF3C7"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "12px",
+                        "xl": "1.5rem",
+                        "full": "24px"
+                    },
+                    fontFamily: {
+                        headline: ["Plus Jakarta Sans", "sans-serif"],
+                        body: ["Plus Jakarta Sans", "sans-serif"],
+                        label: ["Plus Jakarta Sans", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #FFF7F8; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="min-h-screen text-slate-900">
+<!-- TopAppBar Shared Component Execution -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-white dark:bg-slate-900 border-b border-rose-100 dark:border-slate-800 shadow-sm">
+<div class="flex items-center gap-6">
+<button class="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-rose-500 transition-colors text-sm font-medium">
+<span class="material-symbols-outlined text-lg">arrow_back</span>
+                대시보드로
+            </button>
+<span class="text-xl font-bold text-rose-500 dark:text-rose-400">Party Cupid</span>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex items-center gap-8 font-sans text-sm font-medium">
+<a class="text-rose-600 dark:text-rose-300 border-b-2 border-rose-500 pb-1" href="#">Dashboard</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-rose-500 transition-colors" href="#">Parties</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-rose-500 transition-colors" href="#">Resources</a>
+</nav>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-600 cursor-pointer p-2 hover:bg-slate-100 rounded-full">notifications</span>
+<span class="material-symbols-outlined text-slate-600 cursor-pointer p-2 hover:bg-slate-100 rounded-full">help</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-rose-100">
+<img alt="Organizer Profile" class="w-full h-full object-cover" data-alt="professional portrait of a friendly event organizer in a modern office setting, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBENb8d5HtEi8w90SqRI5MhWNp39VJJQ-1fRnzNnvhxZm21aP937GR0wKwflYcqFrMZGoXukjKptVhVdqI4xXWgxwKrnr9-QVIVWKe8mwmVp9lgqkYcYhMVZTGVyKgzcHTmjiW94rSeZ8WWmw7jnRzpsJFse7G2Poz90HndMS9EQV9qjjv1mVygskKwG6vs2NBHhEl06-DWpiRtv8-9rGRN-Ye5nyQN4Mv26xR1-c76Mj0AQqQD8Df1L5jqtwx5G3JJ9v_4uKzV3So"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar Shared Component Execution -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 flex flex-col p-4 bg-slate-50 dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 font-sans text-[13px] font-semibold">
+<div class="mb-8 px-4">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-8 h-8 rounded-lg bg-rose-500 flex items-center justify-center text-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div>
+<p class="text-slate-900 dark:text-white font-bold text-sm">Cupid Control</p>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-normal">Live Session</p>
+</div>
+</div>
+</div>
+<nav class="flex flex-col gap-1 flex-1">
+<a class="flex items-center gap-3 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-300 rounded-lg px-4 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">groups</span>
+                Participants
+            </a>
+<a class="flex items-center gap-3 text-slate-500 dark:text-slate-400 px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">assessment</span>
+                Reports
+            </a>
+<a class="flex items-center gap-3 text-slate-500 dark:text-slate-400 px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">pending_actions</span>
+                Requests
+            </a>
+<a class="flex items-center gap-3 text-slate-500 dark:text-slate-400 px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">emoji_events</span>
+                Results
+            </a>
+</nav>
+<button class="mt-auto w-full py-3 bg-slate-200 hover:bg-danger hover:text-white text-slate-700 rounded-lg transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">power_settings_new</span>
+            End Party
+        </button>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 mt-16 p-8">
+<!-- Sub-header -->
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-4">
+<h1 class="text-[28px] font-bold text-slate-900">2026 봄 파티</h1>
+<span class="flex items-center gap-1.5 px-3 py-1 bg-successSoft text-success text-sm font-bold rounded-full">
+<span class="w-2 h-2 bg-success rounded-full animate-pulse"></span>
+                    LIVE
+                </span>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors">수정하기</button>
+<button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:opacity-90 transition-opacity">공지사항 발송</button>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex items-center gap-8 border-b border-rose-100 mb-8 overflow-x-auto whitespace-nowrap">
+<button class="pb-4 px-2 border-b-2 border-primary text-primary font-bold text-[15px] flex items-center gap-2">
+                참여자 <span class="bg-primarySoft px-2 py-0.5 rounded text-xs">23</span>
+</button>
+<button class="pb-4 px-2 text-slate-500 font-medium text-[15px] hover:text-slate-700 transition-colors flex items-center gap-2">
+                신고 <span class="bg-danger text-white px-1.5 py-0.5 rounded-full text-[10px]">2</span>
+</button>
+<button class="pb-4 px-2 text-slate-500 font-medium text-[15px] hover:text-slate-700 transition-colors flex items-center gap-2">
+                요청 <span class="bg-slate-100 px-2 py-0.5 rounded text-xs text-slate-600">5</span>
+</button>
+<button class="pb-4 px-2 text-slate-500 font-medium text-[15px] hover:text-slate-700 transition-colors flex items-center gap-2">
+                결과
+            </button>
+</div>
+<!-- Dashboard Grid Layout -->
+<div class="grid grid-cols-10 gap-8">
+<!-- Left Column: Room Entry Info -->
+<div class="col-span-4 space-y-6">
+<div class="bg-white p-8 rounded-lg shadow-sm border border-rose-100 flex flex-col items-center text-center">
+<div class="w-60 h-60 bg-slate-50 rounded-lg p-4 mb-6 flex items-center justify-center border border-slate-100">
+<img alt="Party QR Code" class="w-full h-full" data-alt="clean digital qr code for an event check-in, minimalist white background with rose colored accent pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPdh6tRTY2mzocqUxYEtDQVUH9n97FWWwHAlj3kSMdtOskFsCO6Ix2qVSw0bo7Nwlk9zmieztpK7R0zG4Xplthl5cXLrdQ5k47XTKVa2V9E0H-koGRfUKXmPiXmmft9Zkr5OuwHL2Wptk0cdG40VriKwzv7OIu5o9X14vYfsTafBqtL8mIFim3RDwCIUwXj_IaUDjeseeVBOAGUMew3zfF74aRxIFgvPtpAMutRPXvcQLLzZLqQAytIUG4y-wjLOUmN35x1lwTECE"/>
+</div>
+<div class="space-y-1 mb-6">
+<p class="text-slate-400 text-sm">입장 전용 URL</p>
+<p class="text-lg font-bold text-slate-800">party.app/r/ABC123</p>
+</div>
+<div class="flex gap-3 w-full">
+<button class="flex-1 py-3 bg-primary text-white rounded-full text-sm font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-lg">download</span>
+                            PNG 다운로드
+                        </button>
+<button class="flex-1 py-3 bg-primarySoft text-primary rounded-full text-sm font-bold flex items-center justify-center gap-2 hover:bg-rose-100 transition-colors">
+<span class="material-symbols-outlined text-lg">link</span>
+                            URL 복사
+                        </button>
+</div>
+</div>
+<div class="bg-slate-100 p-6 rounded-lg border-2 border-dashed border-slate-200">
+<div class="flex items-center gap-3 mb-4 text-slate-600">
+<span class="material-symbols-outlined">warning</span>
+<h3 class="font-bold text-sm">위험 액션 (2단계 확인)</h3>
+</div>
+<button class="w-full py-3 bg-white border border-danger text-danger rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-danger hover:text-white transition-all">
+<span class="material-symbols-outlined text-lg">cancel</span>
+                        [파티 강제 종료]
+                    </button>
+<p class="mt-3 text-center text-xs text-slate-400">강제 종료 시 모든 데이터가 즉시 비공개 처리됩니다.</p>
+</div>
+</div>
+<!-- Right Column: Status & Controls -->
+<div class="col-span-6 space-y-6">
+<!-- Status Dashboard Card -->
+<div class="bg-white p-8 rounded-lg shadow-sm border border-rose-100">
+<div class="flex justify-between items-end mb-4">
+<h2 class="text-slate-500 font-semibold text-sm">실시간 현황</h2>
+<span class="text-2xl font-bold text-slate-900">참여자 23 <span class="text-slate-300 font-normal text-lg">/ 50</span></span>
+</div>
+<div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden mb-8">
+<div class="h-full bg-gradient-to-r from-primary to-rose-400" style="width: 46%;"></div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 bg-accentSoft rounded-lg border border-purple-100">
+<p class="text-accent text-xs font-bold mb-1">현재 단계</p>
+<p class="text-xl font-extrabold text-accent">💜 2차 진행 중</p>
+</div>
+<div class="p-4 bg-slate-50 rounded-lg border border-slate-100">
+<p class="text-slate-500 text-xs font-bold mb-1">남은 시간</p>
+<p class="text-3xl font-extrabold text-slate-900 tracking-tight">00:42:11</p>
+</div>
+<div class="p-4 bg-primarySoft rounded-lg border border-rose-100">
+<p class="text-primary text-xs font-bold mb-1">누적 하트</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="text-xl font-extrabold text-primary">147</span>
+</div>
+</div>
+<div class="p-4 bg-successSoft rounded-lg border border-emerald-100">
+<p class="text-success text-xs font-bold mb-1">예상 매칭</p>
+<p class="text-xl font-extrabold text-success">~12 커플</p>
+</div>
+</div>
+</div>
+<!-- Next Action Card -->
+<div class="bg-white p-8 rounded-lg shadow-sm border border-rose-100 flex items-center justify-between">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="w-2 h-2 bg-accent rounded-full"></span>
+<h3 class="font-bold text-lg text-slate-800">2차 투표 진행 중</h3>
+</div>
+<p class="text-slate-500 text-sm">시간이 완료되면 자동으로 마감됩니다.</p>
+</div>
+<button class="px-6 py-3 bg-white border-2 border-accent text-accent rounded-full text-sm font-bold hover:bg-accent hover:text-white transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">timer_off</span>
+                        조기 마감하기
+                    </button>
+</div>
+<!-- Recent Activity Feed (Bento Style Sub-component) -->
+<div class="bg-white p-6 rounded-lg border border-rose-100">
+<h3 class="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-rose-400">history</span>
+                        최근 활동 로그
+                    </h3>
+<div class="space-y-4">
+<div class="flex gap-4 p-3 hover:bg-slate-50 rounded-lg transition-colors group">
+<div class="w-10 h-10 rounded-full bg-successSoft flex items-center justify-center text-success shrink-0">
+<span class="material-symbols-outlined text-xl">person_add</span>
+</div>
+<div class="flex-1">
+<p class="text-sm text-slate-700 font-medium">새로운 참가자가 입장했습니다.</p>
+<p class="text-xs text-slate-400">익명 기린 • 2분 전</p>
+</div>
+</div>
+<div class="flex gap-4 p-3 hover:bg-slate-50 rounded-lg transition-colors group">
+<div class="w-10 h-10 rounded-full bg-primarySoft flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div class="flex-1">
+<p class="text-sm text-slate-700 font-medium">첫 번째 매칭 커플이 탄생했습니다!</p>
+<p class="text-xs text-slate-400">알림 전송됨 • 15분 전</p>
+</div>
+</div>
+<div class="flex gap-4 p-3 hover:bg-slate-50 rounded-lg transition-colors group">
+<div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 shrink-0">
+<span class="material-symbols-outlined text-xl">report_problem</span>
+</div>
+<div class="flex-1">
+<p class="text-sm text-slate-700 font-medium">부적절한 닉네임 신고가 접수되었습니다.</p>
+<p class="text-xs text-slate-400">익명 호랑이 • 22분 전</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual Toast Notification (Material UX) -->
+<div class="fixed bottom-8 right-8 flex items-center gap-4 bg-slate-900 text-white px-6 py-4 rounded-xl shadow-2xl z-50">
+<span class="material-symbols-outlined text-success">check_circle</span>
+<p class="text-sm font-medium">현재 실시간 데이터를 성공적으로 동기화 중입니다.</p>
+<button class="ml-4 text-xs font-bold text-slate-400 hover:text-white underline">닫기</button>
+</div>
+</body></html>

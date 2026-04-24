@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Party Cupid - Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#FF4D6D",
+                        accent: "#7C3AED",
+                        success: "#10B981",
+                        warning: "#F59E0B",
+                        danger: "#EF4444",
+                        brandBg: "#FFF7F8",
+                        primarySoft: "#FFE3E8",
+                        accentSoft: "#EDE4FF",
+                        successSoft: "#D4F7E8",
+                        warningSurface: "#FEF3C7"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "12px",
+                        "xl": "1.5rem",
+                        "full": "24px"
+                    },
+                    fontFamily: {
+                        headline: ["Plus Jakarta Sans", "sans-serif"],
+                        body: ["Plus Jakarta Sans", "sans-serif"],
+                        label: ["Plus Jakarta Sans", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; word-break: keep-all; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  <style>body,p,span,div,h1,h2,h3,h4,h5,h6,li,td,th,button,label,a{word-break:keep-all;overflow-wrap:break-word;}</style></head>
+<body class="bg-[#FFF7F8] min-h-screen pb-24 text-slate-900">
+<!-- TopAppBar -->
+<header class="bg-[#FFF7F8] dark:bg-slate-900 border-b border-[#FFE3E8] dark:border-slate-800 flex justify-between items-center w-full px-4 h-14 sticky top-0 z-50">
+<div class="flex items-center gap-2">
+<span class="text-[#FF4D6D] text-[22px]">💝</span>
+<h1 class="font-bold text-[22px] tracking-tight text-[#FF4D6D] dark:text-[#FF4D6D]">2026 봄 파티</h1>
+</div>
+<div class="relative active:scale-95 transition-all duration-200 p-2 hover:bg-[#FFE3E8] dark:hover:bg-slate-800 rounded-full">
+<span class="material-symbols-outlined text-slate-500 dark:text-slate-400" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 bg-danger text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-[#FFF7F8]">3</span>
+</div>
+</header>
+<main class="p-4 space-y-4 max-w-[375px] mx-auto">
+<!-- Current Phase Card -->
+<section class="bg-[#EDE4FF] rounded-lg p-5 shadow-sm relative overflow-hidden border border-[#7C3AED]/10">
+<div class="absolute -top-4 -right-4 opacity-10 text-[100px] text-accent select-none">💜</div>
+<div class="relative z-10">
+<span class="text-[13px] font-medium text-slate-500">단계 5/7</span>
+<h2 class="text-[22px] font-bold text-[#7C3AED] mt-1 mb-4">💜 두번째 투표</h2>
+<div class="flex gap-2 mb-4">
+<div class="bg-white rounded-lg px-3 py-2 flex items-center gap-1.5 shadow-sm">
+<span class="text-warning text-[16px] font-bold">⏱</span>
+<span class="text-[13px] font-bold text-warning">03:45 남음</span>
+</div>
+<div class="bg-white rounded-lg px-3 py-2 flex-1 shadow-sm">
+<div class="flex justify-between items-center mb-1.5">
+<span class="text-[11px] font-medium text-slate-500">✅ 18/23 명 완료</span>
+<span class="text-[11px] font-bold text-accent">78%</span>
+</div>
+<div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+<div class="bg-accent h-full w-[78%]"></div>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-center bg-white/60 rounded-full px-4 py-2 mb-4 backdrop-blur-sm">
+<p class="text-[13px] font-bold text-primary">내 선택 ❤ 2명</p>
+<span class="text-slate-400 text-[18px]">→</span>
+</div>
+<button class="w-full bg-primary text-white font-bold py-3.5 rounded-full active:scale-95 transition-transform flex justify-center items-center gap-2 shadow-lg shadow-primary/20">
+                    참여자 보기
+                    <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Phase Timeline Card -->
+<section class="bg-white rounded-lg p-5 border border-[#FFE3E8] shadow-sm">
+<h3 class="text-[15px] font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-400" data-icon="list_alt">list_alt</span>
+                진행 상황
+            </h3>
+<div class="space-y-4">
+<div class="flex gap-3 items-start opacity-50">
+<div class="mt-1"><span class="material-symbols-outlined text-success text-[18px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span></div>
+<div class="text-[13px] text-slate-500 leading-tight">1. 환영 인사</div>
+</div>
+<div class="flex gap-3 items-start opacity-50">
+<div class="mt-1"><span class="material-symbols-outlined text-success text-[18px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span></div>
+<div class="text-[13px] text-slate-500 leading-tight">2. 첫인상 투표 ❤</div>
+</div>
+<div class="flex gap-3 items-start opacity-50">
+<div class="mt-1"><span class="material-symbols-outlined text-success text-[18px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span></div>
+<div class="text-[13px] text-slate-500 leading-tight">3. 자기소개</div>
+</div>
+<div class="flex gap-3 items-start opacity-50">
+<div class="mt-1"><span class="material-symbols-outlined text-success text-[18px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span></div>
+<div class="text-[13px] text-slate-500 leading-tight">4. 그룹 게임</div>
+</div>
+<div class="flex gap-3 items-start relative">
+<div class="absolute left-[9px] top-[24px] w-[2px] h-[24px] bg-slate-100"></div>
+<div class="mt-1"><span class="material-symbols-outlined text-accent text-[18px]" data-icon="sync" style="font-variation-settings: 'FILL' 1;">sync</span></div>
+<div class="text-[13px] font-bold text-accent leading-tight">5. 두번째 투표 ❤</div>
+</div>
+<div class="flex gap-3 items-start">
+<div class="mt-1"><span class="material-symbols-outlined text-slate-300 text-[18px]" data-icon="hourglass_empty">hourglass_empty</span></div>
+<div class="text-[13px] text-slate-400 leading-tight">6. 마지막 투표 ❤</div>
+</div>
+<div class="flex gap-3 items-start">
+<div class="mt-1"><span class="material-symbols-outlined text-slate-300 text-[18px]" data-icon="flag">flag</span></div>
+<div class="text-[13px] text-slate-400 leading-tight">7. 결과 발표</div>
+</div>
+</div>
+</section>
+<!-- Activity Stats -->
+<section class="grid grid-cols-3 gap-3">
+<div class="bg-white rounded-lg p-4 flex flex-col items-center justify-center border border-[#FFE3E8]">
+<span class="text-primary text-[18px] mb-1">❤</span>
+<span class="text-[18px] font-bold">2</span>
+<span class="text-[11px] text-slate-400">누적 선택</span>
+</div>
+<div class="bg-white rounded-lg p-4 flex flex-col items-center justify-center border border-[#FFE3E8]">
+<span class="text-accent text-[18px] mb-1">💌</span>
+<span class="text-[18px] font-bold">1</span>
+<span class="text-[11px] text-slate-400">쪽지</span>
+</div>
+<div class="bg-white rounded-lg p-4 flex flex-col items-center justify-center border border-[#FFE3E8]">
+<span class="text-warning text-[18px] mb-1">🔔</span>
+<span class="text-[18px] font-bold">3</span>
+<span class="text-[11px] text-slate-400">알림</span>
+</div>
+</section>
+<!-- Received Interest Card -->
+<section class="bg-white rounded-lg p-5 border border-[#FFE3E8] shadow-sm relative overflow-hidden">
+<div class="absolute top-0 right-0 p-3">
+<span class="material-symbols-outlined text-slate-300" data-icon="lock">lock</span>
+</div>
+<h3 class="text-[15px] font-bold mb-4 flex items-center gap-1">
+                🔒 받은 관심
+            </h3>
+<div class="flex items-center gap-4 bg-primarySoft rounded-lg p-4">
+<div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-[24px] shadow-sm">
+                    💝
+                </div>
+<div>
+<p class="text-[15px] font-bold text-primary">5명이 하트를 보냈어요</p>
+<p class="text-[11px] text-slate-500 mt-0.5">🔒 익명 · 매칭 시만 공개</p>
+</div>
+</div>
+</section>
+<!-- Visual Asset (Optional extra for high-end look) -->
+<div class="rounded-lg overflow-hidden h-32 relative">
+<img alt="Party" class="w-full h-full object-cover" data-alt="warm cozy party atmosphere with soft lighting and blurred people laughing in the background of a modern aesthetic cafe" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGS7aVITKS0enKZo3Qu_PkaZyX4JKYty85zoxnA40CKSSxLxIM1FuW0xx34u6glmASWNhpPrVlmuF4H2jSlHxamMZXVlqB8U2T1tjC4fXQJpHzG5VKuNdOtN780HIw_DEEcjiW5Gj1svOWh29u3Hu6fxUsCrndzB8j_b_9chTfJnUhMI2INAuPoSHzP3EwCoqFwQKpre2K51I6knY2zTx46kxS_wNL67cNxzFZu2hKqO6siRIY_ASVaRF0LRROXtxG10RKSQ0Oi4o"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end p-4">
+<p class="text-white text-[13px] font-medium">따뜻한 인연이 만들어지는 중입니다</p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-white dark:bg-slate-950 border-t border-[#FFE3E8] dark:border-slate-800 shadow-[0_-4px_20px_rgba(255,77,109,0.1)] rounded-t-3xl">
+<button class="active:scale-90 transition-transform duration-150 flex flex-col items-center justify-center bg-[#FFE3E8] dark:bg-[#FF4D6D]/20 text-[#FF4D6D] rounded-3xl px-4 py-1.5">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[13px] font-medium">Home</span>
+</button>
+<button class="active:scale-90 transition-transform duration-150 flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-[#FF4D6D] dark:hover:text-[#FF4D6D]">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="text-[13px] font-medium">People</span>
+</button>
+<button class="active:scale-90 transition-transform duration-150 flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-[#FF4D6D] dark:hover:text-[#FF4D6D]">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="text-[13px] font-medium">Messages</span>
+</button>
+<button class="active:scale-90 transition-transform duration-150 flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-[#FF4D6D] dark:hover:text-[#FF4D6D]">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="text-[13px] font-medium">Matching</span>
+</button>
+<button class="active:scale-90 transition-transform duration-150 flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-4 py-1.5 hover:text-[#FF4D6D] dark:hover:text-[#FF4D6D]">
+<span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+<span class="text-[13px] font-medium">More</span>
+</button>
+</nav>
+</body></html>
