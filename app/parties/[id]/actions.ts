@@ -132,97 +132,25 @@ export async function kickParticipant(
 }
 
 /**
- * 매칭 판정 — 모든 collect_vote 단계의 votes에서 양방향 ❤를 매칭으로 INSERT
+ * 매칭 판정 — Postgres SECURITY DEFINER 함수 호출 (원자적 + advisory lock)
  *
- * 알고리즘:
- * - votes 전체 fetch (host RLS로 방 전체 읽기 가능)
- * - 동일 단계 내에서 (voter, target) 쌍이 양방향이면 매칭
- * - 한 쌍이 여러 단계에서 매칭되면 가장 마지막 단계 기록
- * - participant_a < participant_b CHECK 제약 준수
+ * 0007 마이그레이션의 recompute_matches(p_room_id) RPC 사용:
+ * - 호스트 권한 확인
+ * - room_id 기반 advisory lock으로 동시 재계산 차단
+ * - delete + insert가 하나의 트랜잭션 내부
+ * - UNIQUE (room_id, a, b)로 중복 차단 (ON CONFLICT DO NOTHING)
  */
 async function computeMatches(
   supabase: ReturnType<typeof createClient>,
   roomId: string,
 ): Promise<{ ok: true; matchCount: number } | { ok: false; error: string }> {
-  // collect_vote=true 단계만 후보
-  const { data: voteStages } = await supabase
-    .from("stages")
-    .select('id, "order"')
-    .eq("room_id", roomId)
-    .eq("collect_vote", true)
-    .order("order");
-
-  if (!voteStages || voteStages.length === 0) {
-    return { ok: true, matchCount: 0 };
+  const { data, error } = await supabase.rpc("recompute_matches", {
+    p_room_id: roomId,
+  });
+  if (error) {
+    return { ok: false, error: `recompute_matches 실패: ${error.message}` };
   }
-
-  // 모든 stage_run id 수집
-  const stageIds = voteStages.map((s) => s.id);
-  const { data: stageRuns } = await supabase
-    .from("stage_runs")
-    .select("id, stage_id")
-    .in("stage_id", stageIds);
-
-  if (!stageRuns || stageRuns.length === 0) return { ok: true, matchCount: 0 };
-
-  const runToStage = new Map(stageRuns.map((r) => [r.id, r.stage_id]));
-  const runIds = stageRuns.map((r) => r.id);
-
-  // 모든 votes fetch
-  const { data: votes } = await supabase
-    .from("votes")
-    .select("stage_run_id, voter_id, target_id")
-    .in("stage_run_id", runIds)
-    .not("target_id", "is", null);
-
-  if (!votes || votes.length === 0) return { ok: true, matchCount: 0 };
-
-  // 양방향 ❤ 추출 — pairKey "min:max" + 단계ID 매핑
-  const voteSet = new Set(votes.map((v) => `${v.stage_run_id}|${v.voter_id}|${v.target_id}`));
-  const pairs = new Map<string, { a: string; b: string; stage_id: string; order: number }>();
-
-  for (const v of votes) {
-    if (!v.target_id) continue;
-    const reverseKey = `${v.stage_run_id}|${v.target_id}|${v.voter_id}`;
-    if (voteSet.has(reverseKey)) {
-      const a = v.voter_id < v.target_id ? v.voter_id : v.target_id;
-      const b = v.voter_id < v.target_id ? v.target_id : v.voter_id;
-      const stage_id = runToStage.get(v.stage_run_id)!;
-      const order = voteStages.find((s) => s.id === stage_id)?.order ?? 0;
-      const pairKey = `${a}|${b}`;
-      const existing = pairs.get(pairKey);
-      if (!existing || existing.order < order) {
-        pairs.set(pairKey, { a, b, stage_id, order });
-      }
-    }
-  }
-
-  if (pairs.size === 0) return { ok: true, matchCount: 0 };
-
-  // 기존 matches 삭제 (재계산)
-  await supabase.from("matches").delete().eq("room_id", roomId);
-
-  // INSERT (RLS는 클라이언트 INSERT 차단이지만 service role이 아닌 사용자도 호스트면 가능?
-  // 0002_rls_policies.sql에는 INSERT 정책이 없음 → 클라이언트 INSERT 불가
-  // 따라서 service_role key로 INSERT 필요. 임시로 REST가 아닌 SQL 통해 우회 불가능.
-  // → 0002에 호스트 INSERT 정책 추가 필요. 우선 시도하고 실패 시 에러 반환.
-
-  const rows = Array.from(pairs.values()).map((p) => ({
-    room_id: roomId,
-    participant_a_id: p.a,
-    participant_b_id: p.b,
-    matched_stage_id: p.stage_id,
-  }));
-
-  const { error: insError } = await supabase.from("matches").insert(rows);
-  if (insError) {
-    return {
-      ok: false,
-      error: `matches INSERT 실패 (RLS 정책 추가 필요): ${insError.message}`,
-    };
-  }
-
-  return { ok: true, matchCount: rows.length };
+  return { ok: true, matchCount: typeof data === "number" ? data : 0 };
 }
 
 /**

@@ -97,7 +97,7 @@ export async function toggleHeart(
     };
   }
 
-  // 5. INSERT
+  // 5. INSERT (UNIQUE (stage_run_id, voter_id, target_id) 제약으로 중복/race 차단)
   const { error: insError } = await supabase.from("votes").insert({
     stage_run_id: stageRun.id,
     voter_id: me.id,
@@ -105,7 +105,13 @@ export async function toggleHeart(
     is_locked: false,
   });
 
-  if (insError) return { ok: false, error: `투표 실패: ${insError.message}` };
+  if (insError) {
+    // 23505 = unique_violation → 중복 클릭/race condition
+    if (insError.code === "23505") {
+      return { ok: false, error: "이미 ❤한 상대입니다 (중복 요청)" };
+    }
+    return { ok: false, error: `투표 실패: ${insError.message}` };
+  }
 
   const remaining = await countRemaining(supabase, stageRun.id, me.id, activeStage.max_selections);
   revalidatePath(`/r/${roomCode}/people`);
