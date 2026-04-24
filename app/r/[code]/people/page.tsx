@@ -96,11 +96,16 @@ export default async function PeopleListPage({
           참여자 ({people.length + 1}명)
         </h1>
         <Link
-          href={`/r/${code}/matches`}
+          href={`/r/${code}/my-hearts`}
           className="transition-all duration-200 active:scale-95 text-primary flex items-center justify-center w-10 h-10"
-          title="매칭 결과"
+          title="내 선택"
         >
-          <span className="material-symbols-outlined">favorite</span>
+          <span
+            className="material-symbols-outlined"
+            style={{ fontVariationSettings: "'FILL' 1" }}
+          >
+            favorite
+          </span>
         </Link>
       </header>
 

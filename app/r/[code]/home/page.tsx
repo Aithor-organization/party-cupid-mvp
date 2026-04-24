@@ -201,12 +201,12 @@ export default async function ParticipantHome({
         {/* Activity Stats — 실데이터 */}
         <section className="grid grid-cols-3 gap-3">
           <Link
-            href={`/r/${code}/people`}
+            href={`/r/${code}/my-hearts`}
             className="bg-white rounded-lg p-4 flex flex-col items-center justify-center border border-primary-soft hover:bg-primary-soft/30 transition-colors"
           >
             <span className="text-primary text-[18px] mb-1">❤</span>
             <span className="text-[18px] font-bold">{heartsSent ?? 0}</span>
-            <span className="text-[11px] text-slate-400">보낸 ❤</span>
+            <span className="text-[11px] text-slate-400">내 선택</span>
           </Link>
           <Link
             href={`/r/${code}/messages`}
