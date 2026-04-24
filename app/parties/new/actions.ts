@@ -10,14 +10,46 @@ export type CreateRoomResult =
   | { ok: true; roomId: string; code: string }
   | { ok: false; error: string };
 
+type StageInput = {
+  name: string;
+  collect_vote: boolean;
+  max_selections?: number;
+};
+
 export async function createRoom(formData: FormData): Promise<CreateRoomResult> {
   const name = String(formData.get("name") ?? "").trim();
   const maxParticipants = Number(formData.get("max_participants") ?? 50);
+  const stagesJson = String(formData.get("stages_json") ?? "");
 
   if (!name) return { ok: false, error: "파티 이름을 입력해 주세요" };
   if (name.length > 100) return { ok: false, error: "파티 이름은 100자 이내" };
   if (maxParticipants < 2 || maxParticipants > 200) {
     return { ok: false, error: "최대 인원은 2~200명 사이" };
+  }
+
+  // 사용자 정의 stages JSON 파싱
+  let customStages: StageInput[] | null = null;
+  if (stagesJson) {
+    try {
+      const parsed = JSON.parse(stagesJson);
+      if (!Array.isArray(parsed)) throw new Error("배열 아님");
+      if (parsed.length === 0) return { ok: false, error: "최소 1개 단계 필요" };
+      if (parsed.length > 20) return { ok: false, error: "단계는 최대 20개" };
+      customStages = parsed.map((s, i): StageInput => {
+        const sname = String(s?.name ?? "").trim();
+        if (!sname) throw new Error(`${i + 1}번째 단계 이름 누락`);
+        if (sname.length > 100) throw new Error(`${i + 1}번째 단계 이름 100자 초과`);
+        const ms = Number(s?.max_selections ?? 3);
+        if (ms < 1 || ms > 10) throw new Error(`${i + 1}번째 단계 max_selections 1~10`);
+        return {
+          name: sname,
+          collect_vote: !!s?.collect_vote,
+          max_selections: ms,
+        };
+      });
+    } catch (e) {
+      return { ok: false, error: `단계 빌더 오류: ${(e as Error).message}` };
+    }
   }
 
   const supabase = createClient();
@@ -54,17 +86,24 @@ export async function createRoom(formData: FormData): Promise<CreateRoomResult> 
     return { ok: false, error: `방 생성 실패: ${roomError?.message ?? "unknown"}` };
   }
 
-  // 2. 기본 4단계 자동 생성 (사용자가 추후 H-13 편집 가능)
-  const defaultStages = [
-    { order: 1, name: "환영 인사", collect_vote: false, max_selections: 3, trigger_manual: true },
-    { order: 2, name: "첫인상 투표", collect_vote: true, max_selections: 5, trigger_timer_minutes: 5, trigger_manual: true },
-    { order: 3, name: "자기소개 시간", collect_vote: false, max_selections: 3, trigger_timer_minutes: 15, trigger_manual: true },
-    { order: 4, name: "마지막 투표", collect_vote: true, max_selections: 3, trigger_timer_minutes: 5, trigger_all_voted: true, trigger_manual: true },
+  // 2. 단계 INSERT — 사용자 정의 또는 기본 4단계
+  const defaultStages: StageInput[] = [
+    { name: "환영 인사", collect_vote: false, max_selections: 3 },
+    { name: "첫인상 투표", collect_vote: true, max_selections: 5 },
+    { name: "자기소개 시간", collect_vote: false, max_selections: 3 },
+    { name: "마지막 투표", collect_vote: true, max_selections: 3 },
   ];
+  const stagesToInsert = (customStages ?? defaultStages).map((s, i) => ({
+    order: i + 1,
+    name: s.name,
+    collect_vote: s.collect_vote,
+    max_selections: s.max_selections ?? 3,
+    trigger_manual: true,
+  }));
 
   const { error: stagesError } = await supabase
     .from("stages")
-    .insert(defaultStages.map((s) => ({ ...s, room_id: room.id })));
+    .insert(stagesToInsert.map((s) => ({ ...s, room_id: room.id })));
 
   if (stagesError) {
     // rooms INSERT는 성공했으니 그대로 진행 (stages는 추후 빌더에서 보정)

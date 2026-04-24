@@ -22,42 +22,82 @@ type Phase = {
   id: number;
   title: string;
   vote: boolean;
-  active?: boolean;
-  badge?: string;
-  triggerText?: string;
-  triggerChips?: { label: string; active?: boolean; muted?: boolean }[];
+  maxSelections: number;
 };
 
 const initialPhases: Phase[] = [
-  { id: 1, title: "환영 인사", vote: false, triggerText: "수동만" },
-  {
-    id: 2,
-    title: "첫인상 투표",
-    vote: true,
-    active: true,
-    badge: "VOTING ACTIVE",
-    triggerChips: [
-      { label: "⏱ 5분 타이머", active: true },
-      { label: "Auto-advance", active: true },
-      { label: "👤 수동 (필수)", muted: true },
-    ],
-  },
-  { id: 3, title: "자기소개 시간", vote: false, triggerText: "15분 + 👤 수동" },
-  {
-    id: 4,
-    title: "마지막 투표",
-    vote: true,
-    badge: "FINAL ROUND",
-    triggerText: "⏱ 5분 + ✅ 전원완료 + 👤 수동",
-  },
+  { id: 1, title: "환영 인사", vote: false, maxSelections: 3 },
+  { id: 2, title: "첫인상 투표", vote: true, maxSelections: 5 },
+  { id: 3, title: "자기소개 시간", vote: false, maxSelections: 3 },
+  { id: 4, title: "마지막 투표", vote: true, maxSelections: 3 },
 ];
+
+const TEMPLATES: Record<string, Phase[]> = {
+  "기본 4단계": initialPhases,
+  "심플 (2단계)": [
+    { id: 1, title: "자기소개", vote: false, maxSelections: 3 },
+    { id: 2, title: "최종 ❤", vote: true, maxSelections: 5 },
+  ],
+  "긴 파티 (6단계)": [
+    { id: 1, title: "환영 인사", vote: false, maxSelections: 3 },
+    { id: 2, title: "1차 ❤ (첫인상)", vote: true, maxSelections: 5 },
+    { id: 3, title: "자기소개 라운드", vote: false, maxSelections: 3 },
+    { id: 4, title: "2차 ❤ (대화 후)", vote: true, maxSelections: 4 },
+    { id: 5, title: "그룹 게임", vote: false, maxSelections: 3 },
+    { id: 6, title: "최종 ❤", vote: true, maxSelections: 3 },
+  ],
+};
 
 export default function NewPartyPage() {
   const [phases, setPhases] = useState<Phase[]>(initialPhases);
   const [security, setSecurity] = useState<"token" | "approval">("token");
+  const [showTemplates, setShowTemplates] = useState(false);
 
   const togglePhaseVote = (id: number) =>
     setPhases((prev) => prev.map((p) => (p.id === id ? { ...p, vote: !p.vote } : p)));
+
+  const updatePhaseTitle = (id: number, title: string) =>
+    setPhases((prev) => prev.map((p) => (p.id === id ? { ...p, title } : p)));
+
+  const updatePhaseMax = (id: number, maxSelections: number) =>
+    setPhases((prev) => prev.map((p) => (p.id === id ? { ...p, maxSelections } : p)));
+
+  const addPhase = () => {
+    setPhases((prev) => {
+      const nextId = prev.length === 0 ? 1 : Math.max(...prev.map((p) => p.id)) + 1;
+      return [...prev, { id: nextId, title: `새 단계 ${prev.length + 1}`, vote: false, maxSelections: 3 }];
+    });
+  };
+
+  const deletePhase = (id: number) => {
+    setPhases((prev) => (prev.length <= 1 ? prev : prev.filter((p) => p.id !== id)));
+  };
+
+  const movePhase = (id: number, direction: "up" | "down") => {
+    setPhases((prev) => {
+      const idx = prev.findIndex((p) => p.id === id);
+      if (idx < 0) return prev;
+      const swap = direction === "up" ? idx - 1 : idx + 1;
+      if (swap < 0 || swap >= prev.length) return prev;
+      const next = [...prev];
+      [next[idx], next[swap]] = [next[swap], next[idx]];
+      return next;
+    });
+  };
+
+  const applyTemplate = (key: string) => {
+    setPhases(TEMPLATES[key].map((p, i) => ({ ...p, id: i + 1 })));
+    setShowTemplates(false);
+  };
+
+  // hidden input에 phases JSON 직렬화 (Server Action으로 전송)
+  const stagesJson = JSON.stringify(
+    phases.map((p) => ({
+      name: p.title,
+      collect_vote: p.vote,
+      max_selections: p.maxSelections,
+    })),
+  );
 
   return (
     <div className="bg-bg text-slate-900 min-h-screen">
@@ -129,85 +169,151 @@ export default function NewPartyPage() {
             </div>
           </section>
 
-          {/* Section 2: Phase Builder */}
+          {/* Section 2: Phase Builder — 인터랙티브 */}
           <section className="bg-white rounded-lg shadow-sm border border-rose-50 overflow-hidden">
+            {/* hidden input — Server Action으로 phases JSON 전송 */}
+            <input type="hidden" name="stages_json" value={stagesJson} />
+
             <div className="bg-primary-soft px-8 py-5 flex flex-col md:flex-row justify-between items-center gap-4">
               <h3 className="text-lg font-bold flex items-center gap-2">
-                <span>📋</span> 단계 빌더
+                <span>📋</span> 단계 빌더 ({phases.length}단계)
               </h3>
-              <div className="flex gap-2">
-                <button className="bg-white text-slate-600 px-4 py-2 rounded-full text-sm font-bold border border-rose-100 hover:bg-rose-50 transition-all flex items-center gap-1">
+              <div className="flex gap-2 relative">
+                <button
+                  type="button"
+                  onClick={() => setShowTemplates((v) => !v)}
+                  className="bg-white text-slate-600 px-4 py-2 rounded-full text-sm font-bold border border-rose-100 hover:bg-rose-50 transition-all flex items-center gap-1"
+                >
                   <span className="material-symbols-outlined text-sm">library_books</span>
-                  템플릿 사용
+                  템플릿
                 </button>
-                <button className="bg-primary text-white px-4 py-2 rounded-full text-sm font-bold shadow-md shadow-rose-200 hover:opacity-90 transition-all flex items-center gap-1">
+                {showTemplates && (
+                  <div className="absolute top-full right-0 mt-2 bg-white border border-rose-100 rounded-lg shadow-lg z-10 min-w-[200px]">
+                    {Object.keys(TEMPLATES).map((key) => (
+                      <button
+                        key={key}
+                        type="button"
+                        onClick={() => applyTemplate(key)}
+                        className="w-full text-left px-4 py-2.5 text-sm hover:bg-rose-50 first:rounded-t-lg last:rounded-b-lg border-b border-rose-50 last:border-b-0"
+                      >
+                        {key} ({TEMPLATES[key].length}단계)
+                      </button>
+                    ))}
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={addPhase}
+                  disabled={phases.length >= 20}
+                  className="bg-primary text-white px-4 py-2 rounded-full text-sm font-bold shadow-md shadow-rose-200 hover:opacity-90 transition-all flex items-center gap-1 disabled:opacity-50"
+                >
                   <span className="material-symbols-outlined text-sm">add</span>
-                  빈 단계 추가
+                  단계 추가
                 </button>
               </div>
             </div>
 
             <div className="p-6 space-y-3">
-              {phases.map((p) => (
+              {phases.map((p, idx) => (
                 <div
                   key={p.id}
-                  className={`flex items-center gap-4 bg-white border-l-4 p-4 rounded-lg ${
+                  className={`flex items-center gap-3 bg-white border-l-4 p-4 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.04)] ${
                     p.vote ? "border-primary" : "border-slate-300"
-                  } ${p.active ? "shadow-[0_4px_12px_rgba(255,77,109,0.08)] ring-1 ring-primary-soft" : "shadow-[0_2px_8px_rgba(0,0,0,0.04)]"}`}
+                  }`}
                 >
-                  <span className={`material-symbols-outlined cursor-grab active:cursor-grabbing ${p.vote ? "text-primary" : "text-slate-300"}`}>drag_indicator</span>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className={`text-sm font-bold ${p.vote ? "text-primary" : "text-slate-400"}`}>단계 {p.id}</span>
-                      <h4 className={p.active ? "font-extrabold text-slate-900" : "font-bold"}>{p.title}</h4>
-                      {p.badge && (
-                        <span className={`text-[10px] px-1.5 py-0.5 font-bold rounded ${p.badge === "FINAL ROUND" ? "bg-success-soft text-success" : "bg-primary-soft text-primary rounded-full"}`}>
-                          {p.badge}
-                        </span>
-                      )}
-                    </div>
-                    {p.triggerChips && (
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {p.triggerChips.map((c) => (
-                          <div
-                            key={c.label}
-                            className={`flex items-center gap-1.5 px-2 py-1 rounded text-[11px] font-bold ${
-                              c.muted
-                                ? "bg-slate-50 text-slate-400 border border-slate-100 opacity-70"
-                                : "bg-rose-50 text-primary border border-rose-100"
-                            }`}
-                          >
-                            <input type="checkbox" checked={!!c.active} disabled className="w-3 h-3 rounded-sm focus:ring-0" /> {c.label}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    {p.triggerText && !p.triggerChips && (
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium ${p.id === 1 ? "bg-slate-100 text-slate-500 uppercase" : p.vote ? "bg-rose-50 text-primary font-bold" : "bg-slate-100 text-slate-600"}`}>
-                          <span className="material-symbols-outlined text-[12px]">{p.id === 1 ? "person" : "schedule"}</span> {p.triggerText}
-                        </span>
-                      </div>
-                    )}
+                  {/* 순서 + 위/아래 이동 */}
+                  <div className="flex flex-col items-center gap-0.5 w-10">
+                    <button
+                      type="button"
+                      onClick={() => movePhase(p.id, "up")}
+                      disabled={idx === 0}
+                      className="w-6 h-4 flex items-center justify-center text-slate-400 hover:text-primary hover:bg-primary-soft rounded text-xs disabled:opacity-30"
+                    >
+                      ▲
+                    </button>
+                    <span className={`text-xs font-bold ${p.vote ? "text-primary" : "text-slate-400"}`}>
+                      {idx + 1}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => movePhase(p.id, "down")}
+                      disabled={idx === phases.length - 1}
+                      className="w-6 h-4 flex items-center justify-center text-slate-400 hover:text-primary hover:bg-primary-soft rounded text-xs disabled:opacity-30"
+                    >
+                      ▼
+                    </button>
                   </div>
-                  <div className="flex items-center gap-6">
-                    <div className="flex flex-col items-center">
-                      <span className={`text-[10px] font-bold mb-1 uppercase tracking-tighter ${p.vote ? "text-primary font-black" : "text-slate-400"}`}>Vote</span>
-                      <button onClick={() => togglePhaseVote(p.id)} className={`w-10 h-5 rounded-full relative cursor-pointer transition-colors ${p.vote ? "bg-primary" : "bg-slate-200"}`}>
-                        <div className={`absolute top-1 bg-white w-3 h-3 rounded-full transition-all ${p.vote ? "right-1" : "left-1"}`}></div>
-                      </button>
-                    </div>
-                    <div className="flex gap-1">
-                      <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-full transition-all">
-                        <span className="material-symbols-outlined text-xl">settings</span>
-                      </button>
-                      <button className="p-2 text-slate-400 hover:text-danger hover:bg-red-50 rounded-full transition-all">
-                        <span className="material-symbols-outlined text-xl">delete</span>
-                      </button>
-                    </div>
+
+                  {/* 이름 입력 */}
+                  <input
+                    type="text"
+                    value={p.title}
+                    onChange={(e) => updatePhaseTitle(p.id, e.target.value)}
+                    maxLength={100}
+                    placeholder="단계 이름"
+                    className="flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none bg-slate-50/50"
+                  />
+
+                  {/* Vote 토글 */}
+                  <div className="flex flex-col items-center">
+                    <span
+                      className={`text-[10px] font-bold mb-1 uppercase tracking-tighter ${
+                        p.vote ? "text-primary" : "text-slate-400"
+                      }`}
+                    >
+                      ❤
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => togglePhaseVote(p.id)}
+                      className={`w-10 h-5 rounded-full relative transition-colors ${
+                        p.vote ? "bg-primary" : "bg-slate-200"
+                      }`}
+                    >
+                      <div
+                        className={`absolute top-1 bg-white w-3 h-3 rounded-full transition-all ${
+                          p.vote ? "right-1" : "left-1"
+                        }`}
+                      ></div>
+                    </button>
                   </div>
+
+                  {/* 한도 입력 (vote=true 일 때만 활성) */}
+                  <div className="flex flex-col items-center">
+                    <span className="text-[10px] font-bold text-slate-400 mb-1 uppercase">
+                      MAX
+                    </span>
+                    <input
+                      type="number"
+                      value={p.maxSelections}
+                      onChange={(e) =>
+                        updatePhaseMax(p.id, Math.max(1, Math.min(10, Number(e.target.value) || 1)))
+                      }
+                      disabled={!p.vote}
+                      min={1}
+                      max={10}
+                      className="w-14 border border-slate-200 rounded-lg px-2 py-1.5 text-sm text-center disabled:bg-slate-50 disabled:text-slate-400 focus:ring-2 focus:ring-primary outline-none"
+                    />
+                  </div>
+
+                  {/* 삭제 */}
+                  <button
+                    type="button"
+                    onClick={() => deletePhase(p.id)}
+                    disabled={phases.length <= 1}
+                    className="p-2 text-slate-400 hover:text-danger hover:bg-red-50 rounded-full transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                    title={phases.length <= 1 ? "최소 1단계 필요" : "삭제"}
+                  >
+                    <span className="material-symbols-outlined text-xl">delete</span>
+                  </button>
                 </div>
               ))}
+
+              {phases.length === 0 && (
+                <div className="text-center py-8 text-slate-400 text-sm">
+                  단계가 없습니다. "단계 추가" 또는 "템플릿"을 사용하세요.
+                </div>
+              )}
             </div>
           </section>
 
