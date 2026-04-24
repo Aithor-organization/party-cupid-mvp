@@ -66,7 +66,18 @@ export default function NicknamePage({
         router.push(`/r/${params.code}/home`);
         return;
       }
-      setError(`입장 실패: ${insertError.message}`);
+      // not-null violation (entry_number 등) → 0008 마이그레이션 미적용
+      if (insertError.code === "23502") {
+        console.error("[nickname] 23502:", insertError);
+        setError(
+          "DB 마이그레이션 0008이 적용되지 않았습니다. 운영자에게 문의해 주세요.",
+        );
+        setLoading(false);
+        return;
+      }
+      // RLS 차단 또는 기타
+      console.error("[nickname] insert error:", insertError);
+      setError(`입장 실패 (${insertError.code ?? "?"}): ${insertError.message}`);
       setLoading(false);
       return;
     }

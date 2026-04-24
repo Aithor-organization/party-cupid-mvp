@@ -41,6 +41,8 @@ supabase/migrations/0003_triggers.sql                    # auth.users → profil
 supabase/migrations/0004_matches_host_insert.sql         # 매칭 INSERT 정책
 supabase/migrations/0005_enable_realtime.sql             # Realtime publication 등록
 supabase/migrations/0006_fix_participants_rls_recursion.sql  # RLS 무한 재귀 수정 (필수)
+supabase/migrations/0007_codex_security_fixes.sql            # Codex 보안 4건 (필수)
+supabase/migrations/0008_auto_entry_number.sql               # 닉네임 입장 trigger (필수)
 ```
 
 각 파일 내용을 SQL Editor에 붙여넣고 **Run** 클릭. 에러 없이 "Success" 메시지 확인.
