@@ -1,109 +1,46 @@
-// A-4 닉네임 입력 + Anonymous Auth (v6 핵심 플로우)
-"use client";
+// A-4 닉네임 입력 — Server Action으로 anonymous auth + INSERT 처리
+// (쿠키 동기화 보장 + 클라이언트 timing 이슈 회피)
+import Link from "next/link";
+import { Suspense } from "react";
+import { enterRoomAndRedirect } from "./actions";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+function ErrorBanner({ error }: { error: string | undefined }) {
+  if (!error) return null;
+  return (
+    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+      ⚠️ {decodeURIComponent(error)}
+    </div>
+  );
+}
 
 export default function NicknamePage({
   params,
+  searchParams,
 }: {
   params: { code: string };
+  searchParams: { error?: string };
 }) {
-  const router = useRouter();
-  const supabase = createClient();
-  const [nickname, setNickname] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  async function handleEnter(e: React.FormEvent) {
-    e.preventDefault();
-    if (nickname.trim().length < 1) { setError("닉네임을 입력해 주세요"); return; }
-    if (nickname.length > 20) { setError("닉네임은 20자 이내"); return; }
-
-    setLoading(true);
-    setError(null);
-
-    // 1. 방 조회 (code → id)
-    const { data: room, error: roomError } = await supabase
-      .from("rooms")
-      .select("id")
-      .eq("code", params.code)
-      .single();
-
-    if (roomError || !room) {
-      setError("방을 찾을 수 없습니다");
-      setLoading(false);
-      return;
-    }
-
-    // 2. Anonymous Auth (이미 세션 있으면 그대로 사용)
-    const { data: { user } } = await supabase.auth.getUser();
-    let userId = user?.id;
-
-    if (!userId) {
-      const { data: anonData, error: anonError } = await supabase.auth.signInAnonymously();
-      if (anonError || !anonData.user) {
-        setError(`인증 실패: ${anonError?.message ?? "unknown"}`);
-        setLoading(false);
-        return;
-      }
-      userId = anonData.user.id;
-    }
-
-    // 3. participants INSERT
-    const { error: insertError } = await supabase
-      .from("participants")
-      .insert({
-        room_id: room.id,
-        anon_user_id: userId,
-        nickname: nickname.trim(),
-      });
-
-    if (insertError) {
-      // 이미 같은 방에 입장한 경우 (UNIQUE 제약)
-      if (insertError.code === "23505") {
-        router.push(`/r/${params.code}/home`);
-        return;
-      }
-      // not-null violation (entry_number 등) → 0008 마이그레이션 미적용
-      if (insertError.code === "23502") {
-        console.error("[nickname] 23502:", insertError);
-        setError(
-          "DB 마이그레이션 0008이 적용되지 않았습니다. 운영자에게 문의해 주세요.",
-        );
-        setLoading(false);
-        return;
-      }
-      // RLS 차단 또는 기타
-      console.error("[nickname] insert error:", insertError);
-      setError(`입장 실패 (${insertError.code ?? "?"}): ${insertError.message}`);
-      setLoading(false);
-      return;
-    }
-
-    router.push(`/r/${params.code}/home`);
-    router.refresh();
-  }
-
   return (
     <main className="min-h-screen p-6 max-w-md mx-auto flex items-center">
       <div className="card w-full">
         <h1 className="text-xl font-bold mb-4">방에 들어가기</h1>
 
-        <form onSubmit={handleEnter} className="space-y-4">
+        <form action={enterRoomAndRedirect} className="space-y-4">
+          <input type="hidden" name="code" value={params.code} />
+
           <div>
-            <label className="block text-sm font-medium mb-1">
+            <label className="block text-sm font-medium mb-1" htmlFor="nickname">
               닉네임 (1~20자)
             </label>
             <input
+              id="nickname"
               type="text"
+              name="nickname"
               required
+              minLength={1}
               maxLength={20}
               autoFocus
               className="input"
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
               placeholder="예: 캔디팝"
             />
           </div>
@@ -112,12 +49,21 @@ export default function NicknamePage({
             💡 한 기기에서 계속 사용해 주세요. 다른 기기에서는 다시 입장해야 해요.
           </p>
 
-          {error && <p className="text-sm text-danger">{error}</p>}
+          <Suspense fallback={null}>
+            <ErrorBanner error={searchParams.error} />
+          </Suspense>
 
-          <button type="submit" disabled={loading} className="btn-primary w-full">
-            {loading ? "입장 중..." : "입장하기"}
+          <button type="submit" className="btn-primary w-full">
+            입장하기
           </button>
         </form>
+
+        <Link
+          href={`/r/${params.code}/consent`}
+          className="block text-center text-sm text-gray-500 mt-4"
+        >
+          ← 약관으로 돌아가기
+        </Link>
       </div>
     </main>
   );

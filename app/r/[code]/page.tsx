@@ -29,11 +29,16 @@ export default async function RoomEntryPage({
       .select("id, status")
       .eq("room_id", room.id)
       .eq("anon_user_id", user.id)
-      .single();
+      .maybeSingle();
 
-    if (participant && participant.status === "active") {
+    if (participant?.status === "active") {
       redirect(`/r/${code}/home`);
     }
+    if (participant?.status === "kicked") {
+      redirect(`/r/${code}/locked`);
+    }
+    // user 세션은 있지만 participant 미생성 → 닉네임 입력으로 직행 (약관 스킵)
+    redirect(`/r/${code}/nickname`);
   }
 
   // 신규 진입 → 약관으로

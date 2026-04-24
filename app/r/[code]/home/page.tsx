@@ -14,7 +14,7 @@ export default async function ParticipantHome({
   const { code } = params;
 
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect(`/r/${code}/consent`);
+  if (!user) redirect(`/r/${code}/nickname`);
 
   const { data: room } = await supabase
     .from("rooms")
@@ -28,8 +28,12 @@ export default async function ParticipantHome({
     .select("id, nickname, entry_number, status")
     .eq("room_id", room.id)
     .eq("anon_user_id", user.id)
-    .single();
-  if (!participant || participant.status !== "active") redirect(`/r/${code}/consent`);
+    .maybeSingle();
+
+  // 참여자가 아직 INSERT 안 됨 → 닉네임 페이지로 (consent로 가면 무한 루프)
+  if (!participant) redirect(`/r/${code}/nickname`);
+  if (participant.status === "kicked") redirect(`/r/${code}/locked`);
+  if (participant.status === "left") redirect(`/r/${code}/nickname`);
 
   const roomName = room.name;
   const nickname = participant.nickname;
