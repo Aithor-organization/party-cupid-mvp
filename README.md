@@ -35,11 +35,12 @@ SUPABASE_SERVICE_ROLE_KEY=eyJ...
 Supabase 대시보드 → **SQL Editor** → New query → 다음 5개 파일 **순서대로** 실행:
 
 ```
-supabase/migrations/0001_initial_schema.sql       # 9 테이블 생성
-supabase/migrations/0002_rls_policies.sql         # RLS 권한 정책 (15+)
-supabase/migrations/0003_triggers.sql             # auth.users → profiles 자동 생성
-supabase/migrations/0004_matches_host_insert.sql  # 매칭 INSERT 정책
-supabase/migrations/0005_enable_realtime.sql      # Realtime publication 등록
+supabase/migrations/0001_initial_schema.sql              # 9 테이블 생성
+supabase/migrations/0002_rls_policies.sql                # RLS 권한 정책 (15+)
+supabase/migrations/0003_triggers.sql                    # auth.users → profiles 자동 생성
+supabase/migrations/0004_matches_host_insert.sql         # 매칭 INSERT 정책
+supabase/migrations/0005_enable_realtime.sql             # Realtime publication 등록
+supabase/migrations/0006_fix_participants_rls_recursion.sql  # RLS 무한 재귀 수정 (필수)
 ```
 
 각 파일 내용을 SQL Editor에 붙여넣고 **Run** 클릭. 에러 없이 "Success" 메시지 확인.
