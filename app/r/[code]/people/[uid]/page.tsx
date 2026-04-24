@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { toggleHeart, reportTarget } from "../../actions";
+import ReportButton from "@/components/ReportButton";
 
 export default async function PersonDetailPage({
   params,
@@ -199,22 +200,13 @@ export default async function PersonDetailPage({
 
         {/* Footer — 신고 */}
         <footer className="mt-12 mb-8 flex flex-col items-center gap-4">
-          <form
-            action={async (formData) => {
+          <ReportButton
+            variant="text"
+            action={async (reason) => {
               "use server";
-              const reason = String(formData.get("reason") ?? "부적절한 사용자");
-              await reportTarget(code, { targetParticipantId: uid, reason });
+              return await reportTarget(code, { targetParticipantId: uid, reason });
             }}
-          >
-            <input type="hidden" name="reason" value="부적절한 사용자" />
-            <button
-              type="submit"
-              className="text-slate-400 text-[13px] flex items-center gap-1 hover:text-danger transition-colors"
-            >
-              <span className="material-symbols-outlined text-[18px]">flag</span>
-              신고하기
-            </button>
-          </form>
+          />
           <div className="flex items-center gap-1 text-slate-300">
             <span className="material-symbols-outlined text-[16px]">info</span>
             <span className="text-[11px]">익명 보호 — 매칭 시까지 상호 미공개</span>

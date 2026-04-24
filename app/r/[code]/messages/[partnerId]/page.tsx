@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { sendMessage, reportTarget } from "../../actions";
+import ReportButton from "@/components/ReportButton";
 import RealtimeRefresh from "@/components/RealtimeRefresh";
 
 export default async function ConversationPage({
@@ -81,22 +82,14 @@ export default async function ConversationPage({
             #{partner.entry_number} {partner.nickname}
           </h1>
         </div>
-        <form
-          action={async (formData) => {
+        <ReportButton
+          variant="icon"
+          label="신고"
+          action={async (reason) => {
             "use server";
-            const reason = String(formData.get("reason") ?? "부적절한 사용자");
-            await reportTarget(code, { targetParticipantId: partnerId, reason });
+            return await reportTarget(code, { targetParticipantId: partnerId, reason });
           }}
-        >
-          <input type="hidden" name="reason" value="부적절한 사용자" />
-          <button
-            type="submit"
-            className="text-[11px] text-slate-400 hover:text-danger transition-colors"
-            title="신고"
-          >
-            <span className="material-symbols-outlined">flag</span>
-          </button>
-        </form>
+        />
       </header>
 
       <main className="flex-1 px-4 py-6 max-w-md mx-auto w-full overflow-y-auto">
