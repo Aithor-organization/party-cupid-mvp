@@ -2,6 +2,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import DeleteRoomButton from "@/components/DeleteRoomButton";
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -59,31 +60,37 @@ export default async function DashboardPage() {
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
           {rooms.map((room) => (
-            <Link
-              key={room.id}
-              href={`/parties/${room.id}`}
-              className="card hover:-translate-y-1 transition-transform block"
-            >
-              <div className="flex items-start justify-between mb-2">
-                <h2 className="text-lg font-bold">{room.name}</h2>
-                <span
-                  className={`px-2 py-0.5 text-xs font-bold rounded ${
-                    room.status === "live"
-                      ? "bg-success-soft text-success"
-                      : room.status === "closed"
-                      ? "bg-slate-100 text-slate-500"
-                      : "bg-primary-soft text-primary"
-                  }`}
-                >
-                  {room.status === "live" ? "LIVE" : room.status === "closed" ? "종료" : "준비"}
-                </span>
-              </div>
-              <div className="text-sm text-gray-500 space-y-1">
-                <p>방 코드: <strong className="text-primary">{room.code}</strong></p>
-                <p>최대 {room.max_participants}명</p>
-                <p className="text-xs">{new Date(room.created_at).toLocaleString("ko-KR")}</p>
-              </div>
-            </Link>
+            <div key={room.id} className="relative">
+              <DeleteRoomButton
+                roomId={room.id}
+                roomName={room.name}
+                status={room.status}
+              />
+              <Link
+                href={`/parties/${room.id}`}
+                className="card hover:-translate-y-1 transition-transform block"
+              >
+                <div className="flex items-start justify-between mb-2 pr-8">
+                  <h2 className="text-lg font-bold">{room.name}</h2>
+                  <span
+                    className={`px-2 py-0.5 text-xs font-bold rounded ${
+                      room.status === "live"
+                        ? "bg-success-soft text-success"
+                        : room.status === "closed"
+                        ? "bg-slate-100 text-slate-500"
+                        : "bg-primary-soft text-primary"
+                    }`}
+                  >
+                    {room.status === "live" ? "LIVE" : room.status === "closed" ? "종료" : "준비"}
+                  </span>
+                </div>
+                <div className="text-sm text-gray-500 space-y-1">
+                  <p>방 코드: <strong className="text-primary">{room.code}</strong></p>
+                  <p>최대 {room.max_participants}명</p>
+                  <p className="text-xs">{new Date(room.created_at).toLocaleString("ko-KR")}</p>
+                </div>
+              </Link>
+            </div>
           ))}
         </div>
       )}
